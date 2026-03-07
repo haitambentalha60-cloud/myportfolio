@@ -1045,7 +1045,7 @@
       <div class="contact-links">
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📧</span>
-          <span class="contact-link-text" contenteditable="true" class="editable">votre.email@gmail.com</span>
+          <span class="contact-link-text" contenteditable="true" class="editable"><span class="__cf_email__" data-cfemail="9aecf5eee8ffb4fff7fbf3f6dafdf7fbf3f6b4f9f5f7">[email&#160;protected]</span></span>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📱</span>
@@ -1114,7 +1114,8 @@
 
 <script>
   // ─── PASSWORD (change "admin2025" to your own password) ───
-  const ADMIN_PASSWORD = 'thegoat2008'
+  window.ADMIN_PASSWORD = 'thegoat2008';
+  window.isAdmin = false;
 
   // ─── SCROLL REVEAL ───
   const reveals = document.querySelectorAll('.reveal');
@@ -1155,9 +1156,9 @@
   setEditing(false);
 
   // ─── ADMIN TOGGLE ───
-  function toggleAdmin() {
-    if (isAdmin) {
-      isAdmin = false;
+  window.toggleAdmin = function() {
+    if (window.isAdmin) {
+      window.isAdmin = false;
       setEditing(false);
     } else {
       document.getElementById('loginOverlay').classList.add('open');
@@ -1165,11 +1166,11 @@
     }
   }
 
-  function checkPassword() {
+  window.checkPassword = function() {
     const input = document.getElementById('pwInput');
     const err = document.getElementById('loginError');
-    if (input.value === ADMIN_PASSWORD) {
-      isAdmin = true;
+    if (input.value === window.ADMIN_PASSWORD) {
+      window.isAdmin = true;
       setEditing(true);
       closeLogin();
     } else {
@@ -1180,7 +1181,7 @@
     }
   }
 
-  function closeLogin() {
+  window.closeLogin = function() {
     document.getElementById('loginOverlay').classList.remove('open');
     document.getElementById('pwInput').value = '';
     document.getElementById('loginError').textContent = '';
@@ -1192,7 +1193,7 @@
 
   // ─── AVATAR UPLOAD ───
   document.getElementById('avatarInput').addEventListener('change', function() {
-    if (!isAdmin) return;
+    if (!window.isAdmin) return;
     const file = this.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1210,8 +1211,8 @@
   });
 
   // ─── ADD SKILL ───
-  function addSkill() {
-    if (!isAdmin) return;
+  window.addSkill = function() {
+    if (!window.isAdmin) return;
     const name = prompt('Nom de la compétence :');
     if (!name) return;
     const level = prompt('Niveau (0-100) :') || '70';
@@ -1228,10 +1229,10 @@
   }
 
   // ─── MODAL ───
-  let modalType = '';
-  function openModal(type) {
-    if (!isAdmin) return;
-    modalType = type;
+  window.modalType = '';
+  window.openModal = function(type) {
+    if (!window.isAdmin) return;
+    window.modalType = type;
     const overlay = document.getElementById('modalOverlay');
     const title = document.getElementById('modalTitle');
     const form = document.getElementById('modalForm');
@@ -1254,12 +1255,12 @@
     overlay.classList.add('open');
   }
 
-  function closeModal() {
+  window.closeModal = function() {
     document.getElementById('modalOverlay').classList.remove('open');
   }
 
-  function saveModal() {
-    if (modalType === 'experience') {
+  window.saveModal = function() {
+    if (window.modalType === 'experience') {
       const date = document.getElementById('m_date').value;
       const title = document.getElementById('m_title').value;
       const org = document.getElementById('m_org').value;
@@ -1296,7 +1297,7 @@
   });
 
   // ─── CONTACT FORM ───
-  function handleSend(btn) {
+  window.handleSend = function(btn) {
     btn.textContent = '✓ Message envoyé !';
     btn.style.background = 'var(--accent2)';
     setTimeout(() => {
@@ -1308,13 +1309,4 @@
   // ─── ANIMATE SKILL BARS ON LOAD ───
   window.addEventListener('load', () => {
     setTimeout(() => {
-      document.querySelectorAll('.skill-fill').forEach(fill => {
-        const w = fill.style.width;
-        fill.style.width = '0%';
-        setTimeout(() => fill.style.width = w, 100);
-      });
-    }, 500);
-  });
-</script>
-</body>
-</html>
+      document.querySelectorAll('.skill
