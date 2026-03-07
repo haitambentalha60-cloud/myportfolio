@@ -675,8 +675,23 @@
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
     }
-    .admin-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .admin-btn.active { border-color: #f04a4a; color: #f04a4a; }
+    .save-btn {
+      position: fixed;
+      bottom: 2rem; left: 9rem;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: #0b0e14;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      z-index: 200;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .save-btn:hover { opacity: 0.85; transform: translateY(-2px); }
 
     /* ─── LOGIN MODAL ─── */
     #loginOverlay {
@@ -852,8 +867,8 @@
 
   <div class="hero-left">
     <p class="hero-tag">🇲🇦 Maroc · Sciences Mathématiques · 2Bac</p>
-    <h1>Bonjour,<br>je suis <em contenteditable="true" class="editable" title="Click to edit your name">Votre Nom</em></h1>
-    <p class="hero-desc" contenteditable="true" class="editable" title="Click to edit">
+    <h1>Bonjour,<br>je suis <em contenteditable="true" data-save="hero-name">Votre Nom</em></h1>
+    <p class="hero-desc" contenteditable="true" data-save="hero-desc">
       Étudiant passionné en 2ème Baccalauréat Sciences Mathématiques. Curieux, ambitieux et toujours prêt à explorer de nouveaux horizons — des maths aux technologies, en passant par les sciences.
     </p>
     <div class="hero-cta">
@@ -869,15 +884,15 @@
         <img id="avatarImg" src="" alt="Profile"/>
       </div>
       <input type="file" id="avatarInput" accept="image/*" style="display:none"/>
-      <div class="card-name" contenteditable="true" class="editable">Votre Nom</div>
-      <div class="card-role">2Bac Sciences Mathématiques A</div>
+      <div class="card-name" contenteditable="true" data-save="card-name">Votre Nom</div>
+      <div class="card-role">2Bac Sciences Mathématiques</div>
       <div class="card-stat">
         <span class="stat-label">Ville</span>
-        <span class="stat-val" contenteditable="true" class="editable">Maroc</span>
+        <span class="stat-val" contenteditable="true" data-save="card-city">Maroc</span>
       </div>
       <div class="card-stat">
         <span class="stat-label">Lycée</span>
-        <span class="stat-val" contenteditable="true" class="editable">Votre Lycée</span>
+        <span class="stat-val" contenteditable="true" data-save="card-lycee">Votre Lycée</span>
       </div>
       <div class="card-stat">
         <span class="stat-label">Filière</span>
@@ -885,7 +900,7 @@
       </div>
       <div class="card-stat">
         <span class="stat-label">Année</span>
-        <span class="stat-val">2025–2026</span>
+        <span class="stat-val">2024–2025</span>
       </div>
     </div>
   </div>
@@ -900,31 +915,31 @@
   </div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p contenteditable="true" class="editable">
+      <p contenteditable="true" data-save="about-p1">
         Je suis un étudiant en terminale Sciences Mathématiques, passionné par les mathématiques, la physique et l'informatique. Mon parcours scolaire m'a appris à résoudre des problèmes complexes avec rigueur et créativité.
       </p>
-      <p contenteditable="true" class="editable">
+      <p contenteditable="true" data-save="about-p2">
         En dehors des cours, j'aime participer à des olympiades de mathématiques, explorer la programmation et m'impliquer dans des activités parascolaires. Mon objectif est d'intégrer une grande école d'ingénieurs ou une université de prestige.
       </p>
-      <p contenteditable="true" class="editable">
+      <p contenteditable="true" data-save="about-p3">
         Je crois fermement que la curiosité intellectuelle est la clé du succès. Chaque problème est une opportunité d'apprendre quelque chose de nouveau.
       </p>
     </div>
     <div class="about-stats reveal">
       <div class="stat-box">
-        <span class="big editable" contenteditable="true">18</span>
+        <span class="big" contenteditable="true" data-save="stat-avg">18</span>
         <span class="label">Moyenne / 20</span>
       </div>
       <div class="stat-box">
-        <span class="big editable" contenteditable="true">3+</span>
+        <span class="big" contenteditable="true" data-save="stat-projects">3+</span>
         <span class="label">Projets réalisés</span>
       </div>
       <div class="stat-box">
-        <span class="big editable" contenteditable="true">2</span>
+        <span class="big" contenteditable="true" data-save="stat-langs">2</span>
         <span class="label">Langues maîtrisées</span>
       </div>
       <div class="stat-box">
-        <span class="big editable" contenteditable="true">5+</span>
+        <span class="big" contenteditable="true" data-save="stat-activities">5+</span>
         <span class="label">Activités extra</span>
       </div>
     </div>
@@ -1039,25 +1054,25 @@
   </div>
   <div class="contact-grid">
     <div class="reveal">
-      <p class="contact-intro" contenteditable="true" class="editable">
+      <p class="contact-intro" contenteditable="true" data-save="contact-intro">
         N'hésitez pas à me contacter pour toute collaboration, opportunité de stage, ou simplement pour échanger sur des sujets qui nous passionnent.
       </p>
       <div class="contact-links">
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📧</span>
-          <span class="contact-link-text" contenteditable="true" class="editable"><span class="__cf_email__" data-cfemail="9aecf5eee8ffb4fff7fbf3f6dafdf7fbf3f6b4f9f5f7">[email&#160;protected]</span></span>
+          <span class="contact-link-text" contenteditable="true" data-save="contact-email"><span class="__cf_email__" data-cfemail="681e071c1a0d460d05090104280f05090104460b0705">[email&#160;protected]</span></span>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📱</span>
-          <span class="contact-link-text" contenteditable="true" class="editable">+212 6XX XXX XXX</span>
+          <span class="contact-link-text" contenteditable="true" data-save="contact-phone">+212 6XX XXX XXX</span>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">🔗</span>
-          <span class="contact-link-text" contenteditable="true" class="editable">linkedin.com/in/votre-profil</span>
+          <span class="contact-link-text" contenteditable="true" data-save="contact-linkedin">linkedin.com/in/votre-profil</span>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📍</span>
-          <span class="contact-link-text" contenteditable="true" class="editable">Votre Ville, Maroc</span>
+          <span class="contact-link-text" contenteditable="true" data-save="contact-city">Votre Ville, Maroc</span>
         </a>
       </div>
     </div>
@@ -1081,13 +1096,14 @@
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <span>© 2025 · <span contenteditable="true" class="editable">Votre Nom</span></span>
+  <span>© 2025 · <span contenteditable="true" data-save="footer-name">Votre Nom</span></span>
   <span>2Bac Sciences Mathématiques · Maroc 🇲🇦</span>
 </footer>
 
 <!-- ─── EDIT HINT ─── -->
 <div class="edit-hint" id="editHint">✏️ Mode édition actif — cliquez pour modifier</div>
 <button class="admin-btn" id="adminBtn">🔒 Admin</button>
+<button class="save-btn" id="saveBtn" style="display:none">☁️ Sauvegarder</button>
 <div id="loginOverlay">
   <div class="login-box">
     <h3>Accès Admin</h3>
@@ -1112,90 +1128,242 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getStorage, ref as sRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+// ─── Firebase config ───
+const firebaseConfig = {
+  apiKey: "AIzaSyAbQcRPTRP3HjP6h1mXuQKR0AQ860vn-1w",
+  authDomain: "myportfolio-1cb5b.firebaseapp.com",
+  databaseURL: "https://myportfolio-1cb5b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "myportfolio-1cb5b",
+  storageBucket: "myportfolio-1cb5b.firebasestorage.app",
+  messagingSenderId: "415483916179",
+  appId: "1:415483916179:web:68dae56f3d0f76e1930266"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ════════════════════════════════════════
+// SAVE TO FIREBASE
+// ════════════════════════════════════════
+function collectData() {
+  var data = {};
+
+  // Named text fields
+  document.querySelectorAll('[data-save]').forEach(function(el) {
+    data[el.getAttribute('data-save')] = el.innerHTML;
+  });
+
+  // Experiences
+  var exps = [];
+  document.querySelectorAll('#timeline .timeline-item').forEach(function(item) {
+    exps.push({
+      date:  (item.querySelector('.timeline-date')  || {}).innerHTML || '',
+      title: (item.querySelector('.timeline-title') || {}).innerHTML || '',
+      org:   (item.querySelector('.timeline-org')   || {}).innerHTML || '',
+      desc:  (item.querySelector('.timeline-desc')  || {}).innerHTML || ''
+    });
+  });
+  data['_experiences'] = exps;
+
+  // Projects
+  var projs = [];
+  document.querySelectorAll('#projectsGrid .project-card').forEach(function(card) {
+    projs.push({
+      tag:   (card.querySelector('.project-tag')   || {}).innerHTML || '',
+      title: (card.querySelector('.project-title') || {}).innerHTML || '',
+      desc:  (card.querySelector('.project-desc')  || {}).innerHTML || ''
+    });
+  });
+  data['_projects'] = projs;
+
+  // Skills
+  var skills = [];
+  document.querySelectorAll('#skillsGrid .skill-card').forEach(function(card) {
+    skills.push({
+      icon:  (card.querySelector('.skill-icon') || {}).innerHTML || '',
+      name:  (card.querySelector('.skill-name') || {}).innerHTML || '',
+      level: (card.querySelector('.skill-fill') || {style:{}}).style.width || '70%'
+    });
+  });
+  data['_skills'] = skills;
+
+  // Avatar (base64)
+  var img = document.getElementById('avatarImg');
+  if (img && img.src && img.src.startsWith('data:')) {
+    data['_avatar'] = img.src;
+  }
+
+  return data;
+}
+
+function saveToFirebase() {
+  var btn = document.getElementById('saveBtn');
+  if (btn) { btn.textContent = '⏳ Sauvegarde...'; btn.disabled = true; }
+  set(ref(db, 'portfolio'), collectData())
+    .then(function() {
+      if (btn) { btn.textContent = '✅ Sauvegardé !'; btn.disabled = false; }
+      setTimeout(function() {
+        if (btn) btn.textContent = '☁️ Sauvegarder';
+      }, 2500);
+    })
+    .catch(function(err) {
+      console.error(err);
+      if (btn) { btn.textContent = '❌ Erreur — réessaie'; btn.disabled = false; }
+    });
+}
+
+// ════════════════════════════════════════
+// RESTORE FROM FIREBASE
+// ════════════════════════════════════════
+function applyData(data) {
+  if (!data) return;
+
+  // Named fields
+  document.querySelectorAll('[data-save]').forEach(function(el) {
+    var key = el.getAttribute('data-save');
+    if (data[key] !== undefined) el.innerHTML = data[key];
+  });
+
+  // Experiences
+  if (data['_experiences'] && data['_experiences'].length) {
+    var timeline = document.getElementById('timeline');
+    var addBtn = document.getElementById('addExpBtn');
+    timeline.querySelectorAll('.timeline-item').forEach(function(el) { el.remove(); });
+    data['_experiences'].forEach(function(exp) {
+      var item = document.createElement('div');
+      item.className = 'timeline-item reveal revealed';
+      item.innerHTML =
+        '<div class="timeline-date" contenteditable="false">'+exp.date+'</div>'+
+        '<div class="timeline-title" contenteditable="false">'+exp.title+'</div>'+
+        '<div class="timeline-org" contenteditable="false">'+exp.org+'</div>'+
+        '<div class="timeline-desc" contenteditable="false">'+exp.desc+'</div>';
+      timeline.insertBefore(item, addBtn);
+    });
+  }
+
+  // Projects
+  if (data['_projects'] && data['_projects'].length) {
+    var grid = document.getElementById('projectsGrid');
+    grid.querySelectorAll('.project-card').forEach(function(el) { el.remove(); });
+    data['_projects'].forEach(function(proj) {
+      var card = document.createElement('div');
+      card.className = 'project-card reveal revealed';
+      card.innerHTML =
+        '<span class="project-tag">'+proj.tag+'</span>'+
+        '<div class="project-title" contenteditable="false">'+proj.title+'</div>'+
+        '<div class="project-desc" contenteditable="false">'+proj.desc+'</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  // Skills
+  if (data['_skills'] && data['_skills'].length) {
+    var sGrid = document.getElementById('skillsGrid');
+    sGrid.querySelectorAll('.skill-card').forEach(function(el) { el.remove(); });
+    data['_skills'].forEach(function(sk) {
+      var card = document.createElement('div');
+      card.className = 'skill-card reveal revealed';
+      card.innerHTML =
+        '<div class="skill-icon">'+sk.icon+'</div>'+
+        '<div class="skill-name">'+sk.name+'</div>'+
+        '<div class="skill-bar"><div class="skill-fill" style="width:'+sk.level+'"></div></div>';
+      sGrid.appendChild(card);
+    });
+  }
+
+  // Avatar
+  if (data['_avatar']) {
+    document.getElementById('avatarImg').src = data['_avatar'];
+    document.getElementById('avatarEl').classList.add('has-photo');
+  }
+
+  // Sync avatar initial
+  var nameEl = document.querySelector('h1 em[data-save]');
+  if (nameEl) {
+    var initial = nameEl.textContent.trim()[0] || 'Y';
+    document.getElementById('avatarInitial').textContent = initial.toUpperCase();
+  }
+}
+
+// Load data on page open (live sync)
+onValue(ref(db, 'portfolio'), function(snapshot) {
+  applyData(snapshot.val());
+});
+
+// ════════════════════════════════════════
+// PAGE LOGIC (editing, modals, etc.)
+// ════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
 
-  // ─── PASSWORD — change 'admin2025' to your own secret ───
-  var ADMIN_PASSWORD = 'thegoat2008';
+  var ADMIN_PASSWORD = 'admin2025';
   var isAdmin = false;
 
-  // ─── SCROLL REVEAL ───
+  // Scroll reveal
   var reveals = document.querySelectorAll('.reveal');
-  var observer = new IntersectionObserver(function(entries) {
+  var revObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e, i) {
       if (e.isIntersecting) {
         setTimeout(function() { e.target.classList.add('revealed'); }, i * 80);
-        observer.unobserve(e.target);
+        revObs.unobserve(e.target);
       }
     });
   }, { threshold: 0.1 });
-  reveals.forEach(function(r) { observer.observe(r); });
+  reveals.forEach(function(r) { revObs.observe(r); });
 
-  // ─── ANIMATE SKILL BARS ───
   setTimeout(function() {
-    document.querySelectorAll('.skill-fill').forEach(function(fill) {
-      var w = fill.style.width;
-      fill.style.width = '0%';
-      setTimeout(function() { fill.style.width = w; }, 100);
+    document.querySelectorAll('.skill-fill').forEach(function(f) {
+      var w = f.style.width; f.style.width = '0%';
+      setTimeout(function() { f.style.width = w; }, 100);
     });
-  }, 500);
+  }, 600);
 
-  // ─── LOCK EDITING BY DEFAULT ───
+  // ── Editing lock/unlock ──
   function setEditing(enabled) {
     document.querySelectorAll('[contenteditable]').forEach(function(el) {
       el.contentEditable = enabled ? 'true' : 'false';
     });
-    document.querySelectorAll('.add-btn').forEach(function(btn) {
-      btn.style.display = enabled ? 'inline-flex' : 'none';
+    document.querySelectorAll('.add-btn').forEach(function(b) {
+      b.style.display = enabled ? 'inline-flex' : 'none';
     });
     document.getElementById('editHint').style.display = enabled ? 'block' : 'none';
-    var avatarEl = document.getElementById('avatarEl');
-    avatarEl.style.cursor = enabled ? 'pointer' : 'default';
-    var adminBtn = document.getElementById('adminBtn');
-    if (enabled) {
-      adminBtn.textContent = '🔓 Quitter Admin';
-      adminBtn.classList.add('active');
-    } else {
-      adminBtn.textContent = '🔒 Admin';
-      adminBtn.classList.remove('active');
-    }
+    document.getElementById('saveBtn').style.display  = enabled ? 'block' : 'none';
+    var ab = document.getElementById('adminBtn');
+    if (enabled) { ab.textContent = '🔓 Quitter Admin'; ab.classList.add('active'); }
+    else         { ab.textContent = '🔒 Admin';         ab.classList.remove('active'); }
   }
-
   setEditing(false);
 
-  // ─── ADMIN BUTTON ───
+  // ── Admin login ──
   document.getElementById('adminBtn').addEventListener('click', function() {
-    if (isAdmin) {
-      isAdmin = false;
-      setEditing(false);
-    } else {
+    if (isAdmin) { isAdmin = false; setEditing(false); }
+    else {
       document.getElementById('loginOverlay').classList.add('open');
       setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
     }
   });
 
-  // ─── PASSWORD CHECK ───
   function checkPassword() {
     var input = document.getElementById('pwInput');
-    var err = document.getElementById('loginError');
+    var err   = document.getElementById('loginError');
     if (input.value === ADMIN_PASSWORD) {
-      isAdmin = true;
-      setEditing(true);
-      closeLogin();
+      isAdmin = true; setEditing(true); closeLogin();
     } else {
       err.textContent = 'Mot de passe incorrect. Réessayez.';
-      input.value = '';
-      input.classList.add('error');
+      input.value = ''; input.classList.add('error');
       setTimeout(function() { input.classList.remove('error'); }, 400);
     }
   }
-
   function closeLogin() {
     document.getElementById('loginOverlay').classList.remove('open');
     document.getElementById('pwInput').value = '';
     document.getElementById('loginError').textContent = '';
   }
-
   document.getElementById('pwSubmitBtn').addEventListener('click', checkPassword);
   document.getElementById('pwCancelBtn').addEventListener('click', closeLogin);
   document.getElementById('pwInput').addEventListener('keydown', function(e) {
@@ -1205,14 +1373,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.target === this) closeLogin();
   });
 
-  // ─── AVATAR UPLOAD ───
+  // ── Save button ──
+  document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
+
+  // ── Avatar ──
   document.getElementById('avatarEl').addEventListener('click', function() {
     if (isAdmin) document.getElementById('avatarInput').click();
   });
   document.getElementById('avatarInput').addEventListener('change', function() {
     if (!isAdmin) return;
-    var file = this.files[0];
-    if (!file) return;
+    var file = this.files[0]; if (!file) return;
     var reader = new FileReader();
     reader.onload = function(e) {
       document.getElementById('avatarImg').src = e.target.result;
@@ -1221,15 +1391,14 @@ document.addEventListener('DOMContentLoaded', function() {
     reader.readAsDataURL(file);
   });
   document.querySelector('h1 em').addEventListener('input', function() {
-    var initial = this.textContent.trim()[0] || 'Y';
-    document.getElementById('avatarInitial').textContent = initial.toUpperCase();
+    var i = this.textContent.trim()[0] || 'Y';
+    document.getElementById('avatarInitial').textContent = i.toUpperCase();
   });
 
-  // ─── ADD SKILL ───
+  // ── Add skill ──
   document.getElementById('addSkillBtn').addEventListener('click', function() {
     if (!isAdmin) return;
-    var name = prompt('Nom de la compétence :');
-    if (!name) return;
+    var name = prompt('Nom de la compétence :'); if (!name) return;
     var level = prompt('Niveau (0-100) :') || '70';
     var icons = ['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
     var icon = icons[Math.floor(Math.random() * icons.length)];
@@ -1239,70 +1408,62 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('skillsGrid').appendChild(card);
   });
 
-  // ─── ADD EXPERIENCE / PROJECT MODAL ───
+  // ── Modals ──
   var modalType = '';
-
   function openModal(type) {
     if (!isAdmin) return;
     modalType = type;
     var title = document.getElementById('modalTitle');
-    var form = document.getElementById('modalForm');
+    var form  = document.getElementById('modalForm');
     if (type === 'experience') {
       title.textContent = 'Ajouter une expérience';
-      form.innerHTML = '<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade de Mathématiques"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre expérience..."></textarea></div>';
+      form.innerHTML = '<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
     } else {
       title.textContent = 'Ajouter un projet';
-      form.innerHTML = '<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre du projet</label><input id="m_title" type="text" placeholder="Ex: Application de calcul numérique"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre projet..."></textarea></div>';
+      form.innerHTML = '<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: App de calcul"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
     }
     document.getElementById('modalOverlay').classList.add('open');
   }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-
-  document.getElementById('addExpBtn').addEventListener('click', function() { openModal('experience'); });
+  document.getElementById('addExpBtn').addEventListener('click',  function() { openModal('experience'); });
   document.getElementById('addProjBtn').addEventListener('click', function() { openModal('project'); });
   document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
   document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
-
   document.getElementById('modalSaveBtn').addEventListener('click', function() {
-    var title = document.getElementById('m_title').value;
-    if (!title) return;
+    var title = document.getElementById('m_title').value; if (!title) return;
     if (modalType === 'experience') {
-      var date = document.getElementById('m_date').value;
-      var org = document.getElementById('m_org').value;
-      var desc = document.getElementById('m_desc').value;
       var item = document.createElement('div');
       item.className = 'timeline-item reveal revealed';
-      item.innerHTML = '<div class="timeline-date" contenteditable="true">'+date+'</div><div class="timeline-title" contenteditable="true">'+title+'</div><div class="timeline-org" contenteditable="true">'+org+'</div><div class="timeline-desc" contenteditable="true">'+desc+'</div>';
-      var timeline = document.getElementById('timeline');
-      timeline.insertBefore(item, timeline.lastElementChild);
+      item.innerHTML =
+        '<div class="timeline-date" contenteditable="true">'+(document.getElementById('m_date').value)+'</div>'+
+        '<div class="timeline-title" contenteditable="true">'+title+'</div>'+
+        '<div class="timeline-org" contenteditable="true">'+(document.getElementById('m_org').value)+'</div>'+
+        '<div class="timeline-desc" contenteditable="true">'+(document.getElementById('m_desc').value)+'</div>';
+      var tl = document.getElementById('timeline');
+      tl.insertBefore(item, document.getElementById('addExpBtn'));
     } else {
-      var tag = document.getElementById('m_tag').value || 'Projet';
-      var desc2 = document.getElementById('m_desc').value;
       var card = document.createElement('div');
       card.className = 'project-card reveal revealed';
-      card.innerHTML = '<span class="project-tag">'+tag+'</span><div class="project-title" contenteditable="true">'+title+'</div><div class="project-desc" contenteditable="true">'+desc2+'</div>';
+      card.innerHTML =
+        '<span class="project-tag">'+(document.getElementById('m_tag').value||'Projet')+'</span>'+
+        '<div class="project-title" contenteditable="true">'+title+'</div>'+
+        '<div class="project-desc" contenteditable="true">'+(document.getElementById('m_desc').value)+'</div>';
       document.getElementById('projectsGrid').appendChild(card);
     }
     closeModal();
   });
 
-  // ─── CONTACT SEND ───
+  // ── Contact send ──
   document.getElementById('sendBtn').addEventListener('click', function() {
     var btn = this;
-    btn.textContent = '✓ Message envoyé !';
-    btn.style.background = 'var(--accent2)';
-    setTimeout(function() {
-      btn.textContent = 'Envoyer le message';
-      btn.style.background = '';
-    }, 3000);
+    btn.textContent = '✓ Message envoyé !'; btn.style.background = 'var(--accent2)';
+    setTimeout(function() { btn.textContent = 'Envoyer le message'; btn.style.background = ''; }, 3000);
   });
 
-});
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
