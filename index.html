@@ -970,7 +970,7 @@
       <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
     </div>
   </div>
-  <button class="add-btn reveal" onclick="addSkill()" style="margin-top:2rem">＋ Ajouter une compétence</button>
+  <button class="add-btn reveal" id="addSkillBtn" style="margin-top:2rem">＋ Ajouter une compétence</button>
 </section>
 
 <!-- ─── EXPERIENCES ─── -->
@@ -1000,7 +1000,7 @@
       <div class="timeline-desc" contenteditable="true" class="editable">Décrivez ici votre stage, bénévolat ou toute activité parascolaire importante.</div>
     </div>
   </div>
-  <button class="add-btn reveal" onclick="openModal('experience')">＋ Ajouter une expérience</button>
+  <button class="add-btn reveal" id="addExpBtn">＋ Ajouter une expérience</button>
 </section>
 
 <!-- ─── PROJECTS ─── -->
@@ -1027,7 +1027,7 @@
       <div class="project-desc" contenteditable="true" class="editable">Décrivez ici un projet personnel, un devoir de recherche, une création, ou tout autre accomplissement dont vous êtes fier.</div>
     </div>
   </div>
-  <button class="add-btn reveal" onclick="openModal('project')">＋ Ajouter un projet</button>
+  <button class="add-btn reveal" id="addProjBtn">＋ Ajouter un projet</button>
 </section>
 
 <!-- ─── CONTACT ─── -->
@@ -1074,7 +1074,7 @@
         <label>Message</label>
         <textarea placeholder="Écrivez votre message ici..."></textarea>
       </div>
-      <button class="btn btn-primary" onclick="handleSend(this)">Envoyer le message</button>
+      <button class="btn btn-primary" id="sendBtn">Envoyer le message</button>
     </div>
   </div>
 </section>
@@ -1087,16 +1087,16 @@
 
 <!-- ─── EDIT HINT ─── -->
 <div class="edit-hint" id="editHint">✏️ Mode édition actif — cliquez pour modifier</div>
-<button class="admin-btn" id="adminBtn" onclick="toggleAdmin()">🔒 Admin</button>
+<button class="admin-btn" id="adminBtn">🔒 Admin</button>
 <div id="loginOverlay">
   <div class="login-box">
     <h3>Accès Admin</h3>
     <p>ENTREZ VOTRE MOT DE PASSE</p>
-    <input type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkPassword()"/>
+    <input type="password" id="pwInput" placeholder="••••••••"/>
     <div class="login-error" id="loginError"></div>
-    <button class="btn btn-primary" style="width:100%" onclick="checkPassword()">Déverrouiller</button>
+    <button class="btn btn-primary" id="pwSubmitBtn" style="width:100%">Déverrouiller</button>
     <br/><br/>
-    <button class="btn btn-ghost" style="width:100%;font-size:0.7rem;margin-top:0.5rem" onclick="closeLogin()">Annuler</button>
+    <button class="btn btn-ghost" id="pwCancelBtn" style="width:100%;font-size:0.7rem;margin-top:0.5rem">Annuler</button>
   </div>
 </div>
 
@@ -1106,43 +1106,52 @@
     <h3 id="modalTitle">Ajouter</h3>
     <div id="modalForm"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveModal()">Ajouter</button>
+      <button class="btn btn-ghost" id="modalCancelBtn">Annuler</button>
+      <button class="btn btn-primary" id="modalSaveBtn">Ajouter</button>
     </div>
   </div>
 </div>
 
 <script>
-  // ─── PASSWORD (change "admin2025" to your own password) ───
-  window.ADMIN_PASSWORD = 'thegoat2008';
-  window.isAdmin = false;
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ─── PASSWORD — change 'admin2025' to your own secret ───
+  var ADMIN_PASSWORD = 'admin2025';
+  var isAdmin = false;
 
   // ─── SCROLL REVEAL ───
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e, i) {
       if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('revealed'), i * 80);
+        setTimeout(function() { e.target.classList.add('revealed'); }, i * 80);
         observer.unobserve(e.target);
       }
     });
   }, { threshold: 0.1 });
-  reveals.forEach(r => observer.observe(r));
+  reveals.forEach(function(r) { observer.observe(r); });
 
-  // ─── LOCK ALL EDITABLE ELEMENTS BY DEFAULT ───
+  // ─── ANIMATE SKILL BARS ───
+  setTimeout(function() {
+    document.querySelectorAll('.skill-fill').forEach(function(fill) {
+      var w = fill.style.width;
+      fill.style.width = '0%';
+      setTimeout(function() { fill.style.width = w; }, 100);
+    });
+  }, 500);
+
+  // ─── LOCK EDITING BY DEFAULT ───
   function setEditing(enabled) {
-    document.querySelectorAll('[contenteditable]').forEach(el => {
+    document.querySelectorAll('[contenteditable]').forEach(function(el) {
       el.contentEditable = enabled ? 'true' : 'false';
     });
-    document.querySelectorAll('.add-btn').forEach(btn => {
+    document.querySelectorAll('.add-btn').forEach(function(btn) {
       btn.style.display = enabled ? 'inline-flex' : 'none';
     });
     document.getElementById('editHint').style.display = enabled ? 'block' : 'none';
-    document.getElementById('avatarEl').style.cursor = enabled ? 'pointer' : 'default';
-    document.getElementById('avatarEl').onclick = enabled
-      ? () => document.getElementById('avatarInput').click()
-      : null;
-    const adminBtn = document.getElementById('adminBtn');
+    var avatarEl = document.getElementById('avatarEl');
+    avatarEl.style.cursor = enabled ? 'pointer' : 'default';
+    var adminBtn = document.getElementById('adminBtn');
     if (enabled) {
       adminBtn.textContent = '🔓 Quitter Admin';
       adminBtn.classList.add('active');
@@ -1152,161 +1161,148 @@
     }
   }
 
-  // Start locked
   setEditing(false);
 
-  // ─── ADMIN TOGGLE ───
-  window.toggleAdmin = function() {
-    if (window.isAdmin) {
-      window.isAdmin = false;
+  // ─── ADMIN BUTTON ───
+  document.getElementById('adminBtn').addEventListener('click', function() {
+    if (isAdmin) {
+      isAdmin = false;
       setEditing(false);
     } else {
       document.getElementById('loginOverlay').classList.add('open');
-      setTimeout(() => document.getElementById('pwInput').focus(), 100);
+      setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
     }
-  }
+  });
 
-  window.checkPassword = function() {
-    const input = document.getElementById('pwInput');
-    const err = document.getElementById('loginError');
-    if (input.value === window.ADMIN_PASSWORD) {
-      window.isAdmin = true;
+  // ─── PASSWORD CHECK ───
+  function checkPassword() {
+    var input = document.getElementById('pwInput');
+    var err = document.getElementById('loginError');
+    if (input.value === ADMIN_PASSWORD) {
+      isAdmin = true;
       setEditing(true);
       closeLogin();
     } else {
       err.textContent = 'Mot de passe incorrect. Réessayez.';
       input.value = '';
       input.classList.add('error');
-      setTimeout(() => input.classList.remove('error'), 400);
+      setTimeout(function() { input.classList.remove('error'); }, 400);
     }
   }
 
-  window.closeLogin = function() {
+  function closeLogin() {
     document.getElementById('loginOverlay').classList.remove('open');
     document.getElementById('pwInput').value = '';
     document.getElementById('loginError').textContent = '';
   }
 
+  document.getElementById('pwSubmitBtn').addEventListener('click', checkPassword);
+  document.getElementById('pwCancelBtn').addEventListener('click', closeLogin);
+  document.getElementById('pwInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
   document.getElementById('loginOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeLogin();
   });
 
   // ─── AVATAR UPLOAD ───
+  document.getElementById('avatarEl').addEventListener('click', function() {
+    if (isAdmin) document.getElementById('avatarInput').click();
+  });
   document.getElementById('avatarInput').addEventListener('change', function() {
-    if (!window.isAdmin) return;
-    const file = this.files[0];
+    if (!isAdmin) return;
+    var file = this.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
+    var reader = new FileReader();
+    reader.onload = function(e) {
       document.getElementById('avatarImg').src = e.target.result;
       document.getElementById('avatarEl').classList.add('has-photo');
     };
     reader.readAsDataURL(file);
   });
-
-  // Update avatar initial when name changes
   document.querySelector('h1 em').addEventListener('input', function() {
-    const initial = this.textContent.trim()[0] || 'Y';
+    var initial = this.textContent.trim()[0] || 'Y';
     document.getElementById('avatarInitial').textContent = initial.toUpperCase();
   });
 
   // ─── ADD SKILL ───
-  window.addSkill = function() {
-    if (!window.isAdmin) return;
-    const name = prompt('Nom de la compétence :');
+  document.getElementById('addSkillBtn').addEventListener('click', function() {
+    if (!isAdmin) return;
+    var name = prompt('Nom de la compétence :');
     if (!name) return;
-    const level = prompt('Niveau (0-100) :') || '70';
-    const icons = ['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
-    const icon = icons[Math.floor(Math.random() * icons.length)];
-    const card = document.createElement('div');
+    var level = prompt('Niveau (0-100) :') || '70';
+    var icons = ['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
+    var icon = icons[Math.floor(Math.random() * icons.length)];
+    var card = document.createElement('div');
     card.className = 'skill-card reveal revealed';
-    card.innerHTML = `
-      <div class="skill-icon">${icon}</div>
-      <div class="skill-name">${name}</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:${Math.min(100,parseInt(level))}%"></div></div>
-    `;
+    card.innerHTML = '<div class="skill-icon">'+icon+'</div><div class="skill-name">'+name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+Math.min(100,parseInt(level))+'%"></div></div>';
     document.getElementById('skillsGrid').appendChild(card);
-  }
+  });
 
-  // ─── MODAL ───
-  window.modalType = '';
-  window.openModal = function(type) {
-    if (!window.isAdmin) return;
-    window.modalType = type;
-    const overlay = document.getElementById('modalOverlay');
-    const title = document.getElementById('modalTitle');
-    const form = document.getElementById('modalForm');
+  // ─── ADD EXPERIENCE / PROJECT MODAL ───
+  var modalType = '';
+
+  function openModal(type) {
+    if (!isAdmin) return;
+    modalType = type;
+    var title = document.getElementById('modalTitle');
+    var form = document.getElementById('modalForm');
     if (type === 'experience') {
       title.textContent = 'Ajouter une expérience';
-      form.innerHTML = `
-        <div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div>
-        <div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade de Mathématiques"/></div>
-        <div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale — Casablanca"/></div>
-        <div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre expérience..."></textarea></div>
-      `;
+      form.innerHTML = '<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade de Mathématiques"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre expérience..."></textarea></div>';
     } else {
       title.textContent = 'Ajouter un projet';
-      form.innerHTML = `
-        <div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div>
-        <div class="form-group"><label>Titre du projet</label><input id="m_title" type="text" placeholder="Ex: Application de calcul numérique"/></div>
-        <div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre projet..."></textarea></div>
-      `;
+      form.innerHTML = '<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre du projet</label><input id="m_title" type="text" placeholder="Ex: Application de calcul numérique"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre projet..."></textarea></div>';
     }
-    overlay.classList.add('open');
+    document.getElementById('modalOverlay').classList.add('open');
   }
 
-  window.closeModal = function() {
+  function closeModal() {
     document.getElementById('modalOverlay').classList.remove('open');
   }
 
-  window.saveModal = function() {
-    if (window.modalType === 'experience') {
-      const date = document.getElementById('m_date').value;
-      const title = document.getElementById('m_title').value;
-      const org = document.getElementById('m_org').value;
-      const desc = document.getElementById('m_desc').value;
-      if (!title) return;
-      const item = document.createElement('div');
-      item.className = 'timeline-item reveal revealed';
-      item.innerHTML = `
-        <div class="timeline-date" contenteditable="true">${date}</div>
-        <div class="timeline-title" contenteditable="true">${title}</div>
-        <div class="timeline-org" contenteditable="true">${org}</div>
-        <div class="timeline-desc" contenteditable="true">${desc}</div>
-      `;
-      document.getElementById('timeline').insertBefore(item, document.getElementById('timeline').lastElementChild);
-    } else {
-      const tag = document.getElementById('m_tag').value || 'Projet';
-      const title = document.getElementById('m_title').value;
-      const desc = document.getElementById('m_desc').value;
-      if (!title) return;
-      const card = document.createElement('div');
-      card.className = 'project-card reveal revealed';
-      card.innerHTML = `
-        <span class="project-tag">${tag}</span>
-        <div class="project-title" contenteditable="true">${title}</div>
-        <div class="project-desc" contenteditable="true">${desc}</div>
-      `;
-      document.getElementById('projectsGrid').appendChild(card);
-    }
-    closeModal();
-  }
-
+  document.getElementById('addExpBtn').addEventListener('click', function() { openModal('experience'); });
+  document.getElementById('addProjBtn').addEventListener('click', function() { openModal('project'); });
+  document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
   document.getElementById('modalOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
-  // ─── CONTACT FORM ───
-  window.handleSend = function(btn) {
+  document.getElementById('modalSaveBtn').addEventListener('click', function() {
+    var title = document.getElementById('m_title').value;
+    if (!title) return;
+    if (modalType === 'experience') {
+      var date = document.getElementById('m_date').value;
+      var org = document.getElementById('m_org').value;
+      var desc = document.getElementById('m_desc').value;
+      var item = document.createElement('div');
+      item.className = 'timeline-item reveal revealed';
+      item.innerHTML = '<div class="timeline-date" contenteditable="true">'+date+'</div><div class="timeline-title" contenteditable="true">'+title+'</div><div class="timeline-org" contenteditable="true">'+org+'</div><div class="timeline-desc" contenteditable="true">'+desc+'</div>';
+      var timeline = document.getElementById('timeline');
+      timeline.insertBefore(item, timeline.lastElementChild);
+    } else {
+      var tag = document.getElementById('m_tag').value || 'Projet';
+      var desc2 = document.getElementById('m_desc').value;
+      var card = document.createElement('div');
+      card.className = 'project-card reveal revealed';
+      card.innerHTML = '<span class="project-tag">'+tag+'</span><div class="project-title" contenteditable="true">'+title+'</div><div class="project-desc" contenteditable="true">'+desc2+'</div>';
+      document.getElementById('projectsGrid').appendChild(card);
+    }
+    closeModal();
+  });
+
+  // ─── CONTACT SEND ───
+  document.getElementById('sendBtn').addEventListener('click', function() {
+    var btn = this;
     btn.textContent = '✓ Message envoyé !';
     btn.style.background = 'var(--accent2)';
-    setTimeout(() => {
+    setTimeout(function() {
       btn.textContent = 'Envoyer le message';
       btn.style.background = '';
     }, 3000);
-  }
+  });
 
-  // ─── ANIMATE SKILL BARS ON LOAD ───
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.querySelectorAll('.skill
+});
+</script>
+</body>
+</html>
