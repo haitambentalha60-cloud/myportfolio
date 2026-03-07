@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Portfolio — 2Bac Sciences Maths</title>
+  <title>Portfolio — 2Bac Sciences Maths 2025/2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -823,7 +823,117 @@
       margin-top: 1.5rem;
     }
 
-    /* ─── RESPONSIVE ─── */
+    /* ─── STAT BOX CLICKABLE ─── */
+    .stat-box { cursor: default; position: relative; }
+    .stat-box.admin-active { cursor: pointer; }
+    .stat-box.admin-active:hover { border-color: var(--accent); }
+
+    /* ─── PROJECT CARD NEW ─── */
+    .project-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+    .proj-delete-btn {
+      background: transparent;
+      border: 1px solid rgba(240,74,74,0.3);
+      color: #f04a4a;
+      border-radius: 4px;
+      width: 24px; height: 24px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .proj-delete-btn:hover { background: rgba(240,74,74,0.15); }
+
+    .project-attachments {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .attach-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      max-width: 180px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .attach-chip:hover { opacity: 0.8; }
+    .attach-chip.type-link  { background: rgba(74,240,200,0.12); color: var(--accent2); border: 1px solid rgba(74,240,200,0.2); }
+    .attach-chip.type-pdf   { background: rgba(240,100,74,0.12); color: #f0a04a;        border: 1px solid rgba(240,100,74,0.2); }
+    .attach-chip.type-image { background: rgba(200,240,74,0.12); color: var(--accent);  border: 1px solid rgba(200,240,74,0.2); }
+    .attach-chip .chip-del  { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.7rem; opacity: 0.6; padding: 0; margin-left: 2px; display: none; }
+    .attach-chip .chip-del:hover { opacity: 1; }
+
+    .proj-attach-btn {
+      margin-top: 0.8rem;
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .proj-attach-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── ATTACH TYPE BUTTONS ─── */
+    .attach-type-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .attach-type-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,240,74,0.07); }
+
+    /* ─── CONTACT DELETE ─── */
+    .contact-link { position: relative; }
+    .contact-del-btn {
+      background: transparent;
+      border: none;
+      color: #f04a4a;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: auto;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .contact-del-btn:hover { opacity: 1; }
+
+    /* ─── SEND STATUS ─── */
+    #sendStatus { animation: fadeUp 0.4s forwards; }
+
+    /* ─── IMAGE PREVIEW ─── */
+    .img-preview {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 0.8rem;
+      display: none;
+    }
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
@@ -1026,20 +1136,35 @@
     <h2>Projets</h2>
   </div>
   <div class="projects-grid" id="projectsGrid">
-    <div class="project-card reveal">
-      <span class="project-tag">Mathématiques</span>
-      <div class="project-title" contenteditable="true" class="editable">Modélisation de suites numériques</div>
-      <div class="project-desc" contenteditable="true" class="editable">Étude et visualisation de suites arithmétiques et géométriques à l'aide d'un programme Python. Exploration des limites et de la convergence.</div>
+    <div class="project-card reveal" data-proj-id="p1">
+      <div class="project-card-top">
+        <span class="project-tag" contenteditable="true">Mathématiques</span>
+        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
+      </div>
+      <div class="project-title" contenteditable="true">Modélisation de suites numériques</div>
+      <div class="project-desc" contenteditable="true">Étude et visualisation de suites arithmétiques et géométriques à l'aide d'un programme Python.</div>
+      <div class="project-attachments"></div>
+      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
     </div>
-    <div class="project-card reveal">
-      <span class="project-tag">Physique</span>
-      <div class="project-title" contenteditable="true" class="editable">Expérience sur le pendule simple</div>
-      <div class="project-desc" contenteditable="true" class="editable">Travaux pratiques sur l'oscillateur harmonique. Mesure et analyse de la période d'oscillation en fonction de la longueur du fil.</div>
+    <div class="project-card reveal" data-proj-id="p2">
+      <div class="project-card-top">
+        <span class="project-tag" contenteditable="true">Physique</span>
+        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
+      </div>
+      <div class="project-title" contenteditable="true">Expérience sur le pendule simple</div>
+      <div class="project-desc" contenteditable="true">Travaux pratiques sur l'oscillateur harmonique. Mesure et analyse de la période d'oscillation.</div>
+      <div class="project-attachments"></div>
+      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
     </div>
-    <div class="project-card reveal">
-      <span class="project-tag">Personnel</span>
-      <div class="project-title" contenteditable="true" class="editable">Votre projet personnel</div>
-      <div class="project-desc" contenteditable="true" class="editable">Décrivez ici un projet personnel, un devoir de recherche, une création, ou tout autre accomplissement dont vous êtes fier.</div>
+    <div class="project-card reveal" data-proj-id="p3">
+      <div class="project-card-top">
+        <span class="project-tag" contenteditable="true">Personnel</span>
+        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
+      </div>
+      <div class="project-title" contenteditable="true">Votre projet personnel</div>
+      <div class="project-desc" contenteditable="true">Décrivez ici un projet personnel, un devoir de recherche ou toute création dont vous êtes fier.</div>
+      <div class="project-attachments"></div>
+      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
     </div>
   </div>
   <button class="add-btn reveal" id="addProjBtn">＋ Ajouter un projet</button>
@@ -1057,53 +1182,61 @@
       <p class="contact-intro" contenteditable="true" data-save="contact-intro">
         N'hésitez pas à me contacter pour toute collaboration, opportunité de stage, ou simplement pour échanger sur des sujets qui nous passionnent.
       </p>
-      <div class="contact-links">
+      <div class="contact-links" id="contactLinksList">
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📧</span>
-          <span class="contact-link-text" contenteditable="true" data-save="contact-email"><span class="__cf_email__" data-cfemail="681e071c1a0d460d05090104280f05090104460b0705">[email&#160;protected]</span></span>
+          <span class="contact-link-text" contenteditable="true" data-save="contact-email">haitambentalha60@gmail.com</span>
+          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📱</span>
           <span class="contact-link-text" contenteditable="true" data-save="contact-phone">+212 6XX XXX XXX</span>
+          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">🔗</span>
           <span class="contact-link-text" contenteditable="true" data-save="contact-linkedin">linkedin.com/in/votre-profil</span>
+          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
         </a>
         <a class="contact-link" href="#">
           <span class="contact-link-icon">📍</span>
           <span class="contact-link-text" contenteditable="true" data-save="contact-city">Votre Ville, Maroc</span>
+          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
         </a>
       </div>
+      <button class="add-btn admin-only" id="addContactLinkBtn" style="display:none;margin-top:1rem">＋ Ajouter un lien</button>
     </div>
     <div class="reveal">
       <div class="form-group">
         <label>Votre nom</label>
-        <input type="text" placeholder="Ex: Ahmed El Mansouri"/>
+        <input type="text" id="contactName" placeholder="Ex: Ahmed El Mansouri"/>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="exemple@email.com"/>
+        <input type="email" id="contactEmail" placeholder="exemple@email.com"/>
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea placeholder="Écrivez votre message ici..."></textarea>
+        <textarea id="contactMessage" placeholder="Écrivez votre message ici..."></textarea>
       </div>
       <button class="btn btn-primary" id="sendBtn">Envoyer le message</button>
+      <div id="sendStatus" style="margin-top:0.8rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--accent2);display:none"></div>
     </div>
   </div>
 </section>
 
 <!-- ─── FOOTER ─── -->
 <footer>
-  <span>© 2025 · <span contenteditable="true" data-save="footer-name">Votre Nom</span></span>
-  <span>2Bac Sciences Mathématiques · Maroc 🇲🇦</span>
+  <span>© 2025/2026 · <span contenteditable="true" data-save="footer-name">Votre Nom</span></span>
+  <span>2Bac Sciences Mathématiques · 2025/2026 · Maroc 🇲🇦</span>
 </footer>
 
 <!-- ─── EDIT HINT ─── -->
 <div class="edit-hint" id="editHint">✏️ Mode édition actif — cliquez pour modifier</div>
 <button class="admin-btn" id="adminBtn">🔒 Admin</button>
 <button class="save-btn" id="saveBtn" style="display:none">☁️ Sauvegarder</button>
+
+<!-- ─── LOGIN MODAL ─── -->
 <div id="loginOverlay">
   <div class="login-box">
     <h3>Accès Admin</h3>
@@ -1116,7 +1249,7 @@
   </div>
 </div>
 
-<!-- ─── MODAL ─── -->
+<!-- ─── GENERAL MODAL ─── -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h3 id="modalTitle">Ajouter</h3>
@@ -1128,13 +1261,47 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><!-- Firebase SDK -->
+<!-- ─── ATTACHMENT MODAL ─── -->
+<div class="modal-overlay" id="attachOverlay">
+  <div class="modal">
+    <h3>Ajouter une pièce jointe</h3>
+    <div style="display:flex;gap:0.8rem;margin-bottom:1.5rem;flex-wrap:wrap">
+      <button class="attach-type-btn active" data-type="link">🔗 Lien</button>
+      <button class="attach-type-btn" data-type="pdf">📄 PDF</button>
+      <button class="attach-type-btn" data-type="image">🖼️ Image</button>
+    </div>
+    <div id="attachForm"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="attachCancelBtn">Annuler</button>
+      <button class="btn btn-primary" id="attachSaveBtn">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONTACT LINK MODAL ─── -->
+<div class="modal-overlay" id="contactLinkOverlay">
+  <div class="modal">
+    <h3>Ajouter un lien de contact</h3>
+    <div class="form-group">
+      <label>Icône (emoji)</label>
+      <input type="text" id="cl_icon" placeholder="Ex: 🐙" style="font-size:1.5rem;text-align:center"/>
+    </div>
+    <div class="form-group">
+      <label>Texte / URL</label>
+      <input type="text" id="cl_text" placeholder="Ex: github.com/mon-profil"/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="clCancelBtn">Annuler</button>
+      <button class="btn btn-primary" id="clSaveBtn">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getStorage, ref as sRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ─── Firebase config ───
 const firebaseConfig = {
   apiKey: "AIzaSyAbQcRPTRP3HjP6h1mXuQKR0AQ860vn-1w",
   authDomain: "myportfolio-1cb5b.firebaseapp.com",
@@ -1144,236 +1311,312 @@ const firebaseConfig = {
   messagingSenderId: "415483916179",
   appId: "1:415483916179:web:68dae56f3d0f76e1930266"
 };
-
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
-// ════════════════════════════════════════
-// SAVE TO FIREBASE
-// ════════════════════════════════════════
+// ══════════════════════════════════════════════
+// COLLECT ALL DATA
+// ══════════════════════════════════════════════
 function collectData() {
   var data = {};
-
-  // Named text fields
   document.querySelectorAll('[data-save]').forEach(function(el) {
     data[el.getAttribute('data-save')] = el.innerHTML;
   });
+
+  // Projects (with attachments)
+  var projs = [];
+  document.querySelectorAll('#projectsGrid .project-card').forEach(function(card) {
+    var attachments = [];
+    card.querySelectorAll('.attach-chip').forEach(function(chip) {
+      attachments.push({
+        type:  chip.dataset.atype  || 'link',
+        label: chip.dataset.alabel || '',
+        url:   chip.dataset.aurl   || ''
+      });
+    });
+    projs.push({
+      tag:         (card.querySelector('.project-tag')   ||{}).innerHTML||'',
+      title:       (card.querySelector('.project-title') ||{}).innerHTML||'',
+      desc:        (card.querySelector('.project-desc')  ||{}).innerHTML||'',
+      attachments: attachments
+    });
+  });
+  data['_projects'] = projs;
 
   // Experiences
   var exps = [];
   document.querySelectorAll('#timeline .timeline-item').forEach(function(item) {
     exps.push({
-      date:  (item.querySelector('.timeline-date')  || {}).innerHTML || '',
-      title: (item.querySelector('.timeline-title') || {}).innerHTML || '',
-      org:   (item.querySelector('.timeline-org')   || {}).innerHTML || '',
-      desc:  (item.querySelector('.timeline-desc')  || {}).innerHTML || ''
+      date:  (item.querySelector('.timeline-date') ||{}).innerHTML||'',
+      title: (item.querySelector('.timeline-title')||{}).innerHTML||'',
+      org:   (item.querySelector('.timeline-org')  ||{}).innerHTML||'',
+      desc:  (item.querySelector('.timeline-desc') ||{}).innerHTML||''
     });
   });
   data['_experiences'] = exps;
-
-  // Projects
-  var projs = [];
-  document.querySelectorAll('#projectsGrid .project-card').forEach(function(card) {
-    projs.push({
-      tag:   (card.querySelector('.project-tag')   || {}).innerHTML || '',
-      title: (card.querySelector('.project-title') || {}).innerHTML || '',
-      desc:  (card.querySelector('.project-desc')  || {}).innerHTML || ''
-    });
-  });
-  data['_projects'] = projs;
 
   // Skills
   var skills = [];
   document.querySelectorAll('#skillsGrid .skill-card').forEach(function(card) {
     skills.push({
-      icon:  (card.querySelector('.skill-icon') || {}).innerHTML || '',
-      name:  (card.querySelector('.skill-name') || {}).innerHTML || '',
-      level: (card.querySelector('.skill-fill') || {style:{}}).style.width || '70%'
+      icon:  (card.querySelector('.skill-icon')||{}).innerHTML||'',
+      name:  (card.querySelector('.skill-name')||{}).innerHTML||'',
+      level: (card.querySelector('.skill-fill')||{style:{}}).style.width||'70%'
     });
   });
   data['_skills'] = skills;
 
-  // Avatar (base64)
+  // Contact links
+  var clinks = [];
+  document.querySelectorAll('#contactLinksList .contact-link').forEach(function(a) {
+    clinks.push({
+      icon: (a.querySelector('.contact-link-icon')||{}).innerHTML||'',
+      text: (a.querySelector('.contact-link-text')||{}).innerHTML||''
+    });
+  });
+  data['_contactlinks'] = clinks;
+
+  // Avatar
   var img = document.getElementById('avatarImg');
-  if (img && img.src && img.src.startsWith('data:')) {
-    data['_avatar'] = img.src;
-  }
+  if (img && img.src && img.src.startsWith('data:')) data['_avatar'] = img.src;
 
   return data;
 }
 
+// ══════════════════════════════════════════════
+// SAVE
+// ══════════════════════════════════════════════
 function saveToFirebase() {
   var btn = document.getElementById('saveBtn');
   if (btn) { btn.textContent = '⏳ Sauvegarde...'; btn.disabled = true; }
   set(ref(db, 'portfolio'), collectData())
     .then(function() {
       if (btn) { btn.textContent = '✅ Sauvegardé !'; btn.disabled = false; }
-      setTimeout(function() {
-        if (btn) btn.textContent = '☁️ Sauvegarder';
-      }, 2500);
+      setTimeout(function() { if (btn) btn.textContent = '☁️ Sauvegarder'; }, 2500);
     })
     .catch(function(err) {
       console.error(err);
-      if (btn) { btn.textContent = '❌ Erreur — réessaie'; btn.disabled = false; }
+      if (btn) { btn.textContent = '❌ Erreur'; btn.disabled = false; }
     });
 }
 
-// ════════════════════════════════════════
-// RESTORE FROM FIREBASE
-// ════════════════════════════════════════
+// ══════════════════════════════════════════════
+// RESTORE
+// ══════════════════════════════════════════════
+function makeAttachChip(att, adminMode) {
+  var icons = { link:'🔗', pdf:'📄', image:'🖼️' };
+  var chip = document.createElement('a');
+  chip.className = 'attach-chip type-' + att.type;
+  chip.href = att.url;
+  chip.target = '_blank';
+  chip.dataset.atype  = att.type;
+  chip.dataset.alabel = att.label;
+  chip.dataset.aurl   = att.url;
+  var delBtn = '<button class="chip-del" title="Supprimer" style="'+(adminMode?'display:inline':'display:none')+'">✕</button>';
+  chip.innerHTML = (icons[att.type]||'📎') + ' ' + (att.label||att.url).substring(0,22) + delBtn;
+  chip.querySelector('.chip-del').addEventListener('click', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    chip.remove();
+  });
+  return chip;
+}
+
+function buildContactLink(icon, text, adminMode) {
+  var a = document.createElement('a');
+  a.className = 'contact-link';
+  a.href = '#';
+  a.innerHTML =
+    '<span class="contact-link-icon">'+icon+'</span>'+
+    '<span class="contact-link-text" contenteditable="'+(adminMode?'true':'false')+'">'+text+'</span>'+
+    '<button class="contact-del-btn admin-only" style="'+(adminMode?'display:block':'display:none')+'" title="Supprimer">✕</button>';
+  a.querySelector('.contact-del-btn').addEventListener('click', function(e) {
+    e.preventDefault(); a.remove();
+  });
+  return a;
+}
+
 function applyData(data) {
   if (!data) return;
 
-  // Named fields
   document.querySelectorAll('[data-save]').forEach(function(el) {
     var key = el.getAttribute('data-save');
     if (data[key] !== undefined) el.innerHTML = data[key];
   });
 
-  // Experiences
-  if (data['_experiences'] && data['_experiences'].length) {
-    var timeline = document.getElementById('timeline');
-    var addBtn = document.getElementById('addExpBtn');
-    timeline.querySelectorAll('.timeline-item').forEach(function(el) { el.remove(); });
-    data['_experiences'].forEach(function(exp) {
-      var item = document.createElement('div');
-      item.className = 'timeline-item reveal revealed';
-      item.innerHTML =
-        '<div class="timeline-date" contenteditable="false">'+exp.date+'</div>'+
-        '<div class="timeline-title" contenteditable="false">'+exp.title+'</div>'+
-        '<div class="timeline-org" contenteditable="false">'+exp.org+'</div>'+
-        '<div class="timeline-desc" contenteditable="false">'+exp.desc+'</div>';
-      timeline.insertBefore(item, addBtn);
-    });
-  }
-
-  // Projects
   if (data['_projects'] && data['_projects'].length) {
     var grid = document.getElementById('projectsGrid');
-    grid.querySelectorAll('.project-card').forEach(function(el) { el.remove(); });
-    data['_projects'].forEach(function(proj) {
+    grid.querySelectorAll('.project-card').forEach(function(el){ el.remove(); });
+    data['_projects'].forEach(function(proj, i) {
       var card = document.createElement('div');
       card.className = 'project-card reveal revealed';
+      card.dataset.projId = 'p'+(i+1);
       card.innerHTML =
-        '<span class="project-tag">'+proj.tag+'</span>'+
+        '<div class="project-card-top">'+
+          '<span class="project-tag" contenteditable="false">'+proj.tag+'</span>'+
+          '<button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>'+
+        '</div>'+
         '<div class="project-title" contenteditable="false">'+proj.title+'</div>'+
-        '<div class="project-desc" contenteditable="false">'+proj.desc+'</div>';
+        '<div class="project-desc"  contenteditable="false">'+proj.desc+'</div>'+
+        '<div class="project-attachments"></div>'+
+        '<button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>';
+      var attDiv = card.querySelector('.project-attachments');
+      if (proj.attachments) {
+        proj.attachments.forEach(function(att) {
+          attDiv.appendChild(makeAttachChip(att, false));
+        });
+      }
+      wireProjectCard(card);
       grid.appendChild(card);
     });
   }
 
-  // Skills
-  if (data['_skills'] && data['_skills'].length) {
-    var sGrid = document.getElementById('skillsGrid');
-    sGrid.querySelectorAll('.skill-card').forEach(function(el) { el.remove(); });
-    data['_skills'].forEach(function(sk) {
-      var card = document.createElement('div');
-      card.className = 'skill-card reveal revealed';
-      card.innerHTML =
-        '<div class="skill-icon">'+sk.icon+'</div>'+
-        '<div class="skill-name">'+sk.name+'</div>'+
-        '<div class="skill-bar"><div class="skill-fill" style="width:'+sk.level+'"></div></div>';
-      sGrid.appendChild(card);
+  if (data['_experiences'] && data['_experiences'].length) {
+    var tl = document.getElementById('timeline');
+    var addBtn = document.getElementById('addExpBtn');
+    tl.querySelectorAll('.timeline-item').forEach(function(el){ el.remove(); });
+    data['_experiences'].forEach(function(exp) {
+      var item = document.createElement('div');
+      item.className = 'timeline-item reveal revealed';
+      item.innerHTML =
+        '<div class="timeline-date"  contenteditable="false">'+exp.date+'</div>'+
+        '<div class="timeline-title" contenteditable="false">'+exp.title+'</div>'+
+        '<div class="timeline-org"   contenteditable="false">'+exp.org+'</div>'+
+        '<div class="timeline-desc"  contenteditable="false">'+exp.desc+'</div>';
+      tl.insertBefore(item, addBtn);
     });
   }
 
-  // Avatar
+  if (data['_skills'] && data['_skills'].length) {
+    var sg = document.getElementById('skillsGrid');
+    sg.querySelectorAll('.skill-card').forEach(function(el){ el.remove(); });
+    data['_skills'].forEach(function(sk) {
+      var c = document.createElement('div');
+      c.className = 'skill-card reveal revealed';
+      c.innerHTML = '<div class="skill-icon">'+sk.icon+'</div><div class="skill-name">'+sk.name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+sk.level+'"></div></div>';
+      sg.appendChild(c);
+    });
+  }
+
+  if (data['_contactlinks'] && data['_contactlinks'].length) {
+    var cl = document.getElementById('contactLinksList');
+    cl.querySelectorAll('.contact-link').forEach(function(el){ el.remove(); });
+    data['_contactlinks'].forEach(function(lnk) {
+      cl.appendChild(buildContactLink(lnk.icon, lnk.text, false));
+    });
+  }
+
   if (data['_avatar']) {
     document.getElementById('avatarImg').src = data['_avatar'];
     document.getElementById('avatarEl').classList.add('has-photo');
   }
 
-  // Sync avatar initial
   var nameEl = document.querySelector('h1 em[data-save]');
   if (nameEl) {
-    var initial = nameEl.textContent.trim()[0] || 'Y';
-    document.getElementById('avatarInitial').textContent = initial.toUpperCase();
+    var ini = nameEl.textContent.trim()[0]||'Y';
+    document.getElementById('avatarInitial').textContent = ini.toUpperCase();
   }
 }
 
-// Load data on page open (live sync)
+// Load from Firebase live
 onValue(ref(db, 'portfolio'), function(snapshot) {
   applyData(snapshot.val());
 });
 
-// ════════════════════════════════════════
-// PAGE LOGIC (editing, modals, etc.)
-// ════════════════════════════════════════
+// ══════════════════════════════════════════════
+// PAGE LOGIC
+// ══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
-
   var ADMIN_PASSWORD = 'admin2025';
   var isAdmin = false;
+  var currentAttachCard = null;
+  var currentAttachType = 'link';
 
   // Scroll reveal
-  var reveals = document.querySelectorAll('.reveal');
   var revObs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e, i) {
+    entries.forEach(function(e,i) {
       if (e.isIntersecting) {
-        setTimeout(function() { e.target.classList.add('revealed'); }, i * 80);
+        setTimeout(function(){ e.target.classList.add('revealed'); }, i*80);
         revObs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
-  reveals.forEach(function(r) { revObs.observe(r); });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(function(r){ revObs.observe(r); });
 
   setTimeout(function() {
     document.querySelectorAll('.skill-fill').forEach(function(f) {
-      var w = f.style.width; f.style.width = '0%';
-      setTimeout(function() { f.style.width = w; }, 100);
+      var w=f.style.width; f.style.width='0%';
+      setTimeout(function(){ f.style.width=w; },100);
     });
   }, 600);
 
-  // ── Editing lock/unlock ──
+  // ── Wire existing project cards ──
+  document.querySelectorAll('#projectsGrid .project-card').forEach(wireProjectCard);
+
+  // ── Wire existing contact delete buttons ──
+  document.querySelectorAll('#contactLinksList .contact-del-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      btn.closest('.contact-link').remove();
+    });
+  });
+
+  // ── setEditing ──
   function setEditing(enabled) {
+    isAdmin = enabled;
     document.querySelectorAll('[contenteditable]').forEach(function(el) {
       el.contentEditable = enabled ? 'true' : 'false';
     });
-    document.querySelectorAll('.add-btn').forEach(function(b) {
-      b.style.display = enabled ? 'inline-flex' : 'none';
+    // add-btn visibility
+    document.querySelectorAll('.add-btn').forEach(function(b){ b.style.display = enabled?'inline-flex':'none'; });
+    // admin-only elements
+    document.querySelectorAll('.admin-only').forEach(function(el){ el.style.display = enabled?'':'none'; });
+    // chip del buttons
+    document.querySelectorAll('.chip-del').forEach(function(b){ b.style.display = enabled?'inline':'none'; });
+    // stat boxes
+    document.querySelectorAll('.stat-box').forEach(function(b){
+      b.classList.toggle('admin-active', enabled);
     });
-    document.getElementById('editHint').style.display = enabled ? 'block' : 'none';
-    document.getElementById('saveBtn').style.display  = enabled ? 'block' : 'none';
+
+    document.getElementById('editHint').style.display = enabled?'block':'none';
+    document.getElementById('saveBtn').style.display  = enabled?'block':'none';
+    document.getElementById('addContactLinkBtn').style.display = enabled?'inline-flex':'none';
+
     var ab = document.getElementById('adminBtn');
-    if (enabled) { ab.textContent = '🔓 Quitter Admin'; ab.classList.add('active'); }
-    else         { ab.textContent = '🔒 Admin';         ab.classList.remove('active'); }
+    if (enabled){ ab.textContent='🔓 Quitter Admin'; ab.classList.add('active'); }
+    else        { ab.textContent='🔒 Admin';         ab.classList.remove('active'); }
   }
   setEditing(false);
 
   // ── Admin login ──
   document.getElementById('adminBtn').addEventListener('click', function() {
-    if (isAdmin) { isAdmin = false; setEditing(false); }
+    if (isAdmin) { setEditing(false); }
     else {
       document.getElementById('loginOverlay').classList.add('open');
-      setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
+      setTimeout(function(){ document.getElementById('pwInput').focus(); },100);
     }
   });
-
   function checkPassword() {
     var input = document.getElementById('pwInput');
     var err   = document.getElementById('loginError');
     if (input.value === ADMIN_PASSWORD) {
-      isAdmin = true; setEditing(true); closeLogin();
+      setEditing(true); closeLogin();
     } else {
-      err.textContent = 'Mot de passe incorrect. Réessayez.';
-      input.value = ''; input.classList.add('error');
-      setTimeout(function() { input.classList.remove('error'); }, 400);
+      err.textContent = 'Mot de passe incorrect.';
+      input.value=''; input.classList.add('error');
+      setTimeout(function(){ input.classList.remove('error'); },400);
     }
   }
   function closeLogin() {
     document.getElementById('loginOverlay').classList.remove('open');
-    document.getElementById('pwInput').value = '';
-    document.getElementById('loginError').textContent = '';
+    document.getElementById('pwInput').value='';
+    document.getElementById('loginError').textContent='';
   }
   document.getElementById('pwSubmitBtn').addEventListener('click', checkPassword);
   document.getElementById('pwCancelBtn').addEventListener('click', closeLogin);
-  document.getElementById('pwInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPassword();
-  });
-  document.getElementById('loginOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeLogin();
-  });
+  document.getElementById('pwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
+  document.getElementById('loginOverlay').addEventListener('click', function(e){ if(e.target===this) closeLogin(); });
 
-  // ── Save button ──
+  // ── Save ──
   document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
 
   // ── Avatar ──
@@ -1382,85 +1625,268 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.getElementById('avatarInput').addEventListener('change', function() {
     if (!isAdmin) return;
-    var file = this.files[0]; if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('avatarImg').src = e.target.result;
+    var file=this.files[0]; if(!file) return;
+    var reader=new FileReader();
+    reader.onload=function(e){
+      document.getElementById('avatarImg').src=e.target.result;
       document.getElementById('avatarEl').classList.add('has-photo');
     };
     reader.readAsDataURL(file);
   });
   document.querySelector('h1 em').addEventListener('input', function() {
-    var i = this.textContent.trim()[0] || 'Y';
-    document.getElementById('avatarInitial').textContent = i.toUpperCase();
+    var i=this.textContent.trim()[0]||'Y';
+    document.getElementById('avatarInitial').textContent=i.toUpperCase();
   });
 
-  // ── Add skill ──
+  // ── Stat boxes — click to edit when admin ──
+  document.querySelectorAll('.stat-box').forEach(function(box) {
+    box.addEventListener('click', function() {
+      if (!isAdmin) return;
+      var big = box.querySelector('.big');
+      if (!big) return;
+      var val = prompt('Nouvelle valeur :', big.textContent.trim());
+      if (val !== null) big.textContent = val;
+    });
+  });
+
+  // ── Skills ──
   document.getElementById('addSkillBtn').addEventListener('click', function() {
     if (!isAdmin) return;
-    var name = prompt('Nom de la compétence :'); if (!name) return;
-    var level = prompt('Niveau (0-100) :') || '70';
-    var icons = ['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
-    var icon = icons[Math.floor(Math.random() * icons.length)];
-    var card = document.createElement('div');
-    card.className = 'skill-card reveal revealed';
-    card.innerHTML = '<div class="skill-icon">'+icon+'</div><div class="skill-name">'+name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+Math.min(100,parseInt(level))+'%"></div></div>';
+    var name=prompt('Nom de la compétence :'); if(!name) return;
+    var level=prompt('Niveau (0-100) :')||'70';
+    var icons=['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
+    var icon=icons[Math.floor(Math.random()*icons.length)];
+    var card=document.createElement('div');
+    card.className='skill-card reveal revealed';
+    card.innerHTML='<div class="skill-icon">'+icon+'</div><div class="skill-name">'+name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+Math.min(100,parseInt(level))+'%"></div></div>';
     document.getElementById('skillsGrid').appendChild(card);
   });
 
-  // ── Modals ──
-  var modalType = '';
+  // ── WIRE PROJECT CARD (attach + delete) ──
+  function wireProjectCard(card) {
+    var delBtn = card.querySelector('.proj-delete-btn');
+    if (delBtn) {
+      delBtn.addEventListener('click', function() {
+        if (confirm('Supprimer ce projet ?')) card.remove();
+      });
+    }
+    var attBtn = card.querySelector('.proj-attach-btn');
+    if (attBtn) {
+      attBtn.addEventListener('click', function() {
+        currentAttachCard = card;
+        openAttachModal();
+      });
+    }
+    card.querySelectorAll('.chip-del').forEach(function(b) {
+      b.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        b.closest('.attach-chip').remove();
+      });
+    });
+  }
+
+  // ── General Modal ──
+  var modalType='';
   function openModal(type) {
     if (!isAdmin) return;
-    modalType = type;
-    var title = document.getElementById('modalTitle');
-    var form  = document.getElementById('modalForm');
-    if (type === 'experience') {
-      title.textContent = 'Ajouter une expérience';
-      form.innerHTML = '<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
+    modalType=type;
+    var title=document.getElementById('modalTitle');
+    var form=document.getElementById('modalForm');
+    if (type==='experience') {
+      title.textContent='Ajouter une expérience';
+      form.innerHTML='<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2025 — 2026"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
     } else {
-      title.textContent = 'Ajouter un projet';
-      form.innerHTML = '<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: App de calcul"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
+      title.textContent='Ajouter un projet';
+      form.innerHTML='<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: App de calcul"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
     }
     document.getElementById('modalOverlay').classList.add('open');
   }
   function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
-  document.getElementById('addExpBtn').addEventListener('click',  function() { openModal('experience'); });
-  document.getElementById('addProjBtn').addEventListener('click', function() { openModal('project'); });
+  document.getElementById('addExpBtn').addEventListener('click',  function(){ openModal('experience'); });
+  document.getElementById('addProjBtn').addEventListener('click', function(){ openModal('project'); });
   document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
-  document.getElementById('modalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  document.getElementById('modalOverlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
   document.getElementById('modalSaveBtn').addEventListener('click', function() {
-    var title = document.getElementById('m_title').value; if (!title) return;
-    if (modalType === 'experience') {
-      var item = document.createElement('div');
-      item.className = 'timeline-item reveal revealed';
-      item.innerHTML =
-        '<div class="timeline-date" contenteditable="true">'+(document.getElementById('m_date').value)+'</div>'+
+    var title=document.getElementById('m_title').value; if(!title) return;
+    if (modalType==='experience') {
+      var item=document.createElement('div');
+      item.className='timeline-item reveal revealed';
+      item.innerHTML=
+        '<div class="timeline-date"  contenteditable="true">'+(document.getElementById('m_date').value||'')+'</div>'+
         '<div class="timeline-title" contenteditable="true">'+title+'</div>'+
-        '<div class="timeline-org" contenteditable="true">'+(document.getElementById('m_org').value)+'</div>'+
-        '<div class="timeline-desc" contenteditable="true">'+(document.getElementById('m_desc').value)+'</div>';
-      var tl = document.getElementById('timeline');
+        '<div class="timeline-org"   contenteditable="true">'+(document.getElementById('m_org').value||'')+'</div>'+
+        '<div class="timeline-desc"  contenteditable="true">'+(document.getElementById('m_desc').value||'')+'</div>';
+      var tl=document.getElementById('timeline');
       tl.insertBefore(item, document.getElementById('addExpBtn'));
     } else {
-      var card = document.createElement('div');
-      card.className = 'project-card reveal revealed';
-      card.innerHTML =
-        '<span class="project-tag">'+(document.getElementById('m_tag').value||'Projet')+'</span>'+
+      var card=document.createElement('div');
+      card.className='project-card reveal revealed';
+      card.innerHTML=
+        '<div class="project-card-top">'+
+          '<span class="project-tag" contenteditable="true">'+(document.getElementById('m_tag').value||'Projet')+'</span>'+
+          '<button class="proj-delete-btn admin-only" title="Supprimer">✕</button>'+
+        '</div>'+
         '<div class="project-title" contenteditable="true">'+title+'</div>'+
-        '<div class="project-desc" contenteditable="true">'+(document.getElementById('m_desc').value)+'</div>';
+        '<div class="project-desc"  contenteditable="true">'+(document.getElementById('m_desc').value||'')+'</div>'+
+        '<div class="project-attachments"></div>'+
+        '<button class="proj-attach-btn admin-only">＋ Ajouter lien / PDF / image</button>';
+      wireProjectCard(card);
       document.getElementById('projectsGrid').appendChild(card);
     }
     closeModal();
   });
 
-  // ── Contact send ──
+  // ── Attachment Modal ──
+  function openAttachModal() {
+    currentAttachType = 'link';
+    document.querySelectorAll('.attach-type-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.type==='link'); });
+    renderAttachForm('link');
+    document.getElementById('attachOverlay').classList.add('open');
+  }
+  function closeAttachModal() { document.getElementById('attachOverlay').classList.remove('open'); }
+
+  function renderAttachForm(type) {
+    var form = document.getElementById('attachForm');
+    if (type==='link') {
+      form.innerHTML=
+        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Voir le projet"/></div>'+
+        '<div class="form-group"><label>URL</label><input id="a_url" type="url" placeholder="https://..."/></div>';
+    } else if (type==='pdf') {
+      form.innerHTML=
+        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Rapport PDF"/></div>'+
+        '<div class="form-group"><label>Fichier PDF</label><input id="a_file" type="file" accept=".pdf" style="color:var(--text);padding:0.5rem 0"/></div>';
+    } else {
+      form.innerHTML=
+        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Photo du projet"/></div>'+
+        '<div class="form-group"><label>Fichier image</label><input id="a_file" type="file" accept="image/*" style="color:var(--text);padding:0.5rem 0"/></div>'+
+        '<img id="imgPreview" class="img-preview"/>';
+      document.getElementById('a_file').addEventListener('change', function() {
+        var file=this.files[0]; if(!file) return;
+        var reader=new FileReader();
+        reader.onload=function(e){
+          var p=document.getElementById('imgPreview');
+          p.src=e.target.result; p.style.display='block';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  document.querySelectorAll('.attach-type-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentAttachType = btn.dataset.type;
+      document.querySelectorAll('.attach-type-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderAttachForm(currentAttachType);
+    });
+  });
+
+  document.getElementById('attachCancelBtn').addEventListener('click', closeAttachModal);
+  document.getElementById('attachOverlay').addEventListener('click', function(e){ if(e.target===this) closeAttachModal(); });
+
+  document.getElementById('attachSaveBtn').addEventListener('click', function() {
+    if (!currentAttachCard) return;
+    var label = (document.getElementById('a_label')||{}).value || '';
+    var attDiv = currentAttachCard.querySelector('.project-attachments');
+
+    if (currentAttachType === 'link') {
+      var url = (document.getElementById('a_url')||{}).value||'';
+      if (!url) return;
+      var chip = makeAttachChip({type:'link', label:label||url, url:url}, true);
+      attDiv.appendChild(chip);
+      closeAttachModal();
+
+    } else {
+      var fileEl = document.getElementById('a_file');
+      if (!fileEl || !fileEl.files[0]) { closeAttachModal(); return; }
+      var file = fileEl.files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var dataUrl = e.target.result;
+        var chip = makeAttachChip({type:currentAttachType, label:label||file.name, url:dataUrl}, true);
+        attDiv.appendChild(chip);
+        closeAttachModal();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // ── Contact link modal ──
+  document.getElementById('addContactLinkBtn').addEventListener('click', function() {
+    document.getElementById('cl_icon').value='';
+    document.getElementById('cl_text').value='';
+    document.getElementById('contactLinkOverlay').classList.add('open');
+    setTimeout(function(){ document.getElementById('cl_icon').focus(); },100);
+  });
+  document.getElementById('clCancelBtn').addEventListener('click', function() {
+    document.getElementById('contactLinkOverlay').classList.remove('open');
+  });
+  document.getElementById('contactLinkOverlay').addEventListener('click', function(e) {
+    if(e.target===this) this.classList.remove('open');
+  });
+  document.getElementById('clSaveBtn').addEventListener('click', function() {
+    var icon = document.getElementById('cl_icon').value || '🔗';
+    var text = document.getElementById('cl_text').value; if(!text) return;
+    var a = buildContactLink(icon, text, true);
+    var addBtn = document.getElementById('addContactLinkBtn');
+    document.getElementById('contactLinksList').insertBefore(a, addBtn);
+    document.getElementById('contactLinkOverlay').classList.remove('open');
+  });
+
+  // ── Contact send via EmailJS ──
+  // Load EmailJS
+  var ejsScript = document.createElement('script');
+  ejsScript.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  ejsScript.onload = function() {
+    emailjs.init('hAQnTvVHaTrYSICHn'); // public key placeholder — update after EmailJS signup
+  };
+  document.head.appendChild(ejsScript);
+
   document.getElementById('sendBtn').addEventListener('click', function() {
-    var btn = this;
-    btn.textContent = '✓ Message envoyé !'; btn.style.background = 'var(--accent2)';
-    setTimeout(function() { btn.textContent = 'Envoyer le message'; btn.style.background = ''; }, 3000);
+    var name    = document.getElementById('contactName').value.trim();
+    var email   = document.getElementById('contactEmail').value.trim();
+    var message = document.getElementById('contactMessage').value.trim();
+    var status  = document.getElementById('sendStatus');
+
+    if (!name || !email || !message) {
+      status.style.display='block';
+      status.style.color='#f04a4a';
+      status.textContent='⚠️ Veuillez remplir tous les champs.';
+      return;
+    }
+
+    var btn = document.getElementById('sendBtn');
+    btn.textContent='⏳ Envoi...'; btn.disabled=true;
+
+    if (typeof emailjs === 'undefined') {
+      // Fallback: mailto
+      window.location.href = 'mailto:haitambentalha60@gmail.com'
+        + '?subject=Message de '+encodeURIComponent(name)
+        + '&body='+encodeURIComponent('De: '+name+'\nEmail: '+email+'\n\n'+message);
+      btn.textContent='Envoyer le message'; btn.disabled=false;
+      return;
+    }
+
+    emailjs.send('service_portfolio', 'template_portfolio', {
+      from_name:    name,
+      from_email:   email,
+      message:      message,
+      to_email:     'haitambentalha60@gmail.com'
+    }).then(function() {
+      status.style.display='block'; status.style.color='var(--accent2)';
+      status.textContent='✅ Message envoyé ! Je te répondrai bientôt.';
+      btn.textContent='Envoyer le message'; btn.disabled=false;
+      document.getElementById('contactName').value='';
+      document.getElementById('contactEmail').value='';
+      document.getElementById('contactMessage').value='';
+    }, function(err) {
+      // Fallback to mailto if EmailJS not configured
+      window.location.href = 'mailto:haitambentalha60@gmail.com'
+        + '?subject=Message de '+encodeURIComponent(name)
+        + '&body='+encodeURIComponent('De: '+name+'\nEmail: '+email+'\n\n'+message);
+      btn.textContent='Envoyer le message'; btn.disabled=false;
+    });
   });
 
 }); // end DOMContentLoaded
