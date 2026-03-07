@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Portfolio — 2Bac Sciences Maths</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --surface: #13171f;
+      --surface2: #1c2130;
+      --accent: #c8f04a;
+      --accent2: #4af0c8;
+      --text: #e8ecf0;
+      --muted: #7a8494;
+      --border: rgba(200,240,74,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      backdrop-filter: blur(20px);
+      background: rgba(11,14,20,0.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+    }
+
+    .hero-left { z-index: 1; }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn {
+      padding: 0.85rem 2rem;
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0b0e14;
+      border: 2px solid var(--accent);
+      font-weight: 500;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── HERO RIGHT (CARD) ─── */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1s 0.5s forwards;
+    }
+
+    .id-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .id-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(200,240,74,0.15), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .card-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      color: #0b0e14;
+      font-weight: 700;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: none;
+    }
+
+    .card-avatar.has-photo .avatar-initial { display: none; }
+    .card-avatar.has-photo img { display: block; }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .card-stat:last-child { border-bottom: none; }
+
+    .stat-label {
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+    }
+
+    .stat-val { font-weight: 400; }
+
+    /* ─── FLOATING MATH ─── */
+    .math-bg {
+      position: absolute;
+      top: 0; right: 0;
+      width: 50%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.04;
+    }
+
+    .math-symbol {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-size: var(--sz);
+      top: var(--top);
+      left: var(--left);
+      animation: float var(--dur) ease-in-out infinite alternate;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 6rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+    }
+
+    .section-line {
+      height: 1px;
+      width: 60px;
+      background: var(--accent);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--surface); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .editable {
+      outline: none;
+      transition: background 0.2s;
+      border-radius: 4px;
+      padding: 4px 6px;
+      margin: -4px -6px;
+    }
+
+    .editable:focus {
+      background: rgba(200,240,74,0.07);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-box .big {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--accent);
+      font-weight: 700;
+      display: block;
+    }
+
+    .stat-box .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .skill-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .skill-bar {
+      height: 3px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+
+    /* ─── EXPERIENCES ─── */
+    #experiences { background: var(--surface); }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 3rem 2.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -4px; top: 6px;
+      width: 9px; height: 9px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .timeline-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-org {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      border: 1px dashed var(--accent);
+      background: transparent;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .add-btn:hover { background: rgba(200,240,74,0.07); }
+
+    /* ─── PROJECTS ─── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+    }
+
+    .project-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      background: rgba(200,240,74,0.12);
+      color: var(--accent);
+      padding: 0.3rem 0.7rem;
+      border-radius: 3px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .project-desc {
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--surface); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-intro {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .contact-link-icon {
+      font-size: 1.2rem;
+      width: 28px;
+      text-align: center;
+    }
+
+    .contact-link-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Contact Form */
+    .form-group { margin-bottom: 1.2rem; }
+
+    .form-group label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+
+    .form-group textarea { height: 120px; resize: vertical; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* ─── EDIT HINT ─── */
+    .edit-hint {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      z-index: 200;
+      animation: pulse 3s ease-in-out infinite;
+      display: none; /* hidden until admin unlocked */
+    }
+
+    /* ─── ADMIN BUTTON ─── */
+    .admin-btn {
+      position: fixed;
+      bottom: 2rem; left: 2rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      z-index: 200;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .admin-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .admin-btn.active { border-color: #f04a4a; color: #f04a4a; }
+
+    /* ─── LOGIN MODAL ─── */
+    #loginOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+    }
+    #loginOverlay.open { display: flex; }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .login-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .login-box p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.8rem;
+    }
+    .login-box input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      text-align: center;
+      letter-spacing: 0.2em;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: var(--accent); }
+    .login-box input.error { border-color: #f04a4a; animation: shake 0.3s; }
+    .login-error {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: #f04a4a;
+      margin-bottom: 0.8rem;
+      min-height: 1rem;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+
+    .revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 480px;
+    }
+
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal .form-group input,
+    .modal .form-group textarea {
+      background: var(--bg);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 3rem; }
+      .hero-right { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .edit-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">Portfolio — 2Bac SM</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experiences">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+
+  <!-- floating math symbols -->
+  <div class="math-bg" aria-hidden="true">
+    <span class="math-symbol" style="--sz:3rem;--top:10%;--left:10%;--dur:4s">∫</span>
+    <span class="math-symbol" style="--sz:2rem;--top:30%;--left:25%;--dur:5s">Σ</span>
+    <span class="math-symbol" style="--sz:4rem;--top:55%;--left:5%;--dur:6s">π</span>
+    <span class="math-symbol" style="--sz:2.5rem;--top:70%;--left:40%;--dur:4.5s">√</span>
+    <span class="math-symbol" style="--sz:3.5rem;--top:20%;--left:55%;--dur:7s">∞</span>
+    <span class="math-symbol" style="--sz:2rem;--top:80%;--left:60%;--dur:5.5s">Δ</span>
+    <span class="math-symbol" style="--sz:3rem;--top:45%;--left:75%;--dur:4s">θ</span>
+    <span class="math-symbol" style="--sz:2.5rem;--top:10%;--left:80%;--dur:6s">λ</span>
+  </div>
+
+  <div class="hero-left">
+    <p class="hero-tag">🇲🇦 Maroc · Sciences Mathématiques · 2Bac</p>
+    <h1>Bonjour,<br>je suis <em contenteditable="true" class="editable" title="Click to edit your name">Votre Nom</em></h1>
+    <p class="hero-desc" contenteditable="true" class="editable" title="Click to edit">
+      Étudiant passionné en 2ème Baccalauréat Sciences Mathématiques. Curieux, ambitieux et toujours prêt à explorer de nouveaux horizons — des maths aux technologies, en passant par les sciences.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Me contacter</a>
+      <a href="#experiences" class="btn btn-ghost">Voir mes expériences</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="id-card">
+      <div class="card-avatar" id="avatarEl" onclick="document.getElementById('avatarInput').click()" title="Click to upload photo">
+        <span class="avatar-initial" id="avatarInitial">Y</span>
+        <img id="avatarImg" src="" alt="Profile"/>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none"/>
+      <div class="card-name" contenteditable="true" class="editable">Votre Nom</div>
+      <div class="card-role">2Bac Sciences Mathématiques</div>
+      <div class="card-stat">
+        <span class="stat-label">Ville</span>
+        <span class="stat-val" contenteditable="true" class="editable">Maroc</span>
+      </div>
+      <div class="card-stat">
+        <span class="stat-label">Lycée</span>
+        <span class="stat-val" contenteditable="true" class="editable">Votre Lycée</span>
+      </div>
+      <div class="card-stat">
+        <span class="stat-label">Filière</span>
+        <span class="stat-val">Sciences Maths</span>
+      </div>
+      <div class="card-stat">
+        <span class="stat-label">Année</span>
+        <span class="stat-val">2024–2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <div class="section-line"></div>
+    <h2>À propos</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p contenteditable="true" class="editable">
+        Je suis un étudiant en terminale Sciences Mathématiques, passionné par les mathématiques, la physique et l'informatique. Mon parcours scolaire m'a appris à résoudre des problèmes complexes avec rigueur et créativité.
+      </p>
+      <p contenteditable="true" class="editable">
+        En dehors des cours, j'aime participer à des olympiades de mathématiques, explorer la programmation et m'impliquer dans des activités parascolaires. Mon objectif est d'intégrer une grande école d'ingénieurs ou une université de prestige.
+      </p>
+      <p contenteditable="true" class="editable">
+        Je crois fermement que la curiosité intellectuelle est la clé du succès. Chaque problème est une opportunité d'apprendre quelque chose de nouveau.
+      </p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-box">
+        <span class="big editable" contenteditable="true">18</span>
+        <span class="label">Moyenne / 20</span>
+      </div>
+      <div class="stat-box">
+        <span class="big editable" contenteditable="true">3+</span>
+        <span class="label">Projets réalisés</span>
+      </div>
+      <div class="stat-box">
+        <span class="big editable" contenteditable="true">2</span>
+        <span class="label">Langues maîtrisées</span>
+      </div>
+      <div class="stat-box">
+        <span class="big editable" contenteditable="true">5+</span>
+        <span class="label">Activités extra</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SKILLS ─── -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <div class="section-line"></div>
+    <h2>Compétences</h2>
+  </div>
+  <div class="skills-grid" id="skillsGrid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">📐</div>
+      <div class="skill-name">Mathématiques</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">⚗️</div>
+      <div class="skill-name">Physique-Chimie</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">💻</div>
+      <div class="skill-name">Programmation</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🇫🇷</div>
+      <div class="skill-name">Français</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🇬🇧</div>
+      <div class="skill-name">Anglais</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔬</div>
+      <div class="skill-name">Sciences de la Vie</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+    </div>
+  </div>
+  <button class="add-btn reveal" onclick="addSkill()" style="margin-top:2rem">＋ Ajouter une compétence</button>
+</section>
+
+<!-- ─── EXPERIENCES ─── -->
+<section id="experiences">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <div class="section-line"></div>
+    <h2>Expériences</h2>
+  </div>
+  <div class="timeline" id="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-date" contenteditable="true" class="editable">2024 — Présent</div>
+      <div class="timeline-title" contenteditable="true" class="editable">2ème Baccalauréat Sciences Mathématiques</div>
+      <div class="timeline-org" contenteditable="true" class="editable">Lycée — Votre Ville, Maroc</div>
+      <div class="timeline-desc" contenteditable="true" class="editable">Préparation intensive au baccalauréat avec une filière axée sur les mathématiques avancées, la physique et les sciences de l'ingénieur.</div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-date" contenteditable="true" class="editable">2023 — 2024</div>
+      <div class="timeline-title" contenteditable="true" class="editable">1ère Baccalauréat Sciences Expérimentales</div>
+      <div class="timeline-org" contenteditable="true" class="editable">Lycée — Votre Ville, Maroc</div>
+      <div class="timeline-desc" contenteditable="true" class="editable">Mention Très Bien. Participation aux olympiades régionales de mathématiques.</div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-date" contenteditable="true" class="editable">Été 2024</div>
+      <div class="timeline-title" contenteditable="true" class="editable">Stage / Activité bénévole</div>
+      <div class="timeline-org" contenteditable="true" class="editable">Organisation — Ville</div>
+      <div class="timeline-desc" contenteditable="true" class="editable">Décrivez ici votre stage, bénévolat ou toute activité parascolaire importante.</div>
+    </div>
+  </div>
+  <button class="add-btn reveal" onclick="openModal('experience')">＋ Ajouter une expérience</button>
+</section>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <div class="section-line"></div>
+    <h2>Projets</h2>
+  </div>
+  <div class="projects-grid" id="projectsGrid">
+    <div class="project-card reveal">
+      <span class="project-tag">Mathématiques</span>
+      <div class="project-title" contenteditable="true" class="editable">Modélisation de suites numériques</div>
+      <div class="project-desc" contenteditable="true" class="editable">Étude et visualisation de suites arithmétiques et géométriques à l'aide d'un programme Python. Exploration des limites et de la convergence.</div>
+    </div>
+    <div class="project-card reveal">
+      <span class="project-tag">Physique</span>
+      <div class="project-title" contenteditable="true" class="editable">Expérience sur le pendule simple</div>
+      <div class="project-desc" contenteditable="true" class="editable">Travaux pratiques sur l'oscillateur harmonique. Mesure et analyse de la période d'oscillation en fonction de la longueur du fil.</div>
+    </div>
+    <div class="project-card reveal">
+      <span class="project-tag">Personnel</span>
+      <div class="project-title" contenteditable="true" class="editable">Votre projet personnel</div>
+      <div class="project-desc" contenteditable="true" class="editable">Décrivez ici un projet personnel, un devoir de recherche, une création, ou tout autre accomplissement dont vous êtes fier.</div>
+    </div>
+  </div>
+  <button class="add-btn reveal" onclick="openModal('project')">＋ Ajouter un projet</button>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <div class="section-line"></div>
+    <h2>Contact</h2>
+  </div>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p class="contact-intro" contenteditable="true" class="editable">
+        N'hésitez pas à me contacter pour toute collaboration, opportunité de stage, ou simplement pour échanger sur des sujets qui nous passionnent.
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="#">
+          <span class="contact-link-icon">📧</span>
+          <span class="contact-link-text" contenteditable="true" class="editable">votre.email@gmail.com</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="contact-link-icon">📱</span>
+          <span class="contact-link-text" contenteditable="true" class="editable">+212 6XX XXX XXX</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="contact-link-icon">🔗</span>
+          <span class="contact-link-text" contenteditable="true" class="editable">linkedin.com/in/votre-profil</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="contact-link-icon">📍</span>
+          <span class="contact-link-text" contenteditable="true" class="editable">Votre Ville, Maroc</span>
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="form-group">
+        <label>Votre nom</label>
+        <input type="text" placeholder="Ex: Ahmed El Mansouri"/>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="exemple@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Écrivez votre message ici..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="handleSend(this)">Envoyer le message</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <span>© 2025 · <span contenteditable="true" class="editable">Votre Nom</span></span>
+  <span>2Bac Sciences Mathématiques · Maroc 🇲🇦</span>
+</footer>
+
+<!-- ─── EDIT HINT ─── -->
+<div class="edit-hint" id="editHint">✏️ Mode édition actif — cliquez pour modifier</div>
+<button class="admin-btn" id="adminBtn" onclick="toggleAdmin()">🔒 Admin</button>
+<div id="loginOverlay">
+  <div class="login-box">
+    <h3>Accès Admin</h3>
+    <p>ENTREZ VOTRE MOT DE PASSE</p>
+    <input type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkPassword()"/>
+    <div class="login-error" id="loginError"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="checkPassword()">Déverrouiller</button>
+    <br/><br/>
+    <button class="btn btn-ghost" style="width:100%;font-size:0.7rem;margin-top:0.5rem" onclick="closeLogin()">Annuler</button>
+  </div>
+</div>
+
+<!-- ─── MODAL ─── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Ajouter</h3>
+    <div id="modalForm"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveModal()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── PASSWORD (change "admin2025" to your own password) ───
+  const ADMIN_PASSWORD = 'thegoat2008'
+
+  // ─── SCROLL REVEAL ───
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('revealed'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ─── LOCK ALL EDITABLE ELEMENTS BY DEFAULT ───
+  function setEditing(enabled) {
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+      el.contentEditable = enabled ? 'true' : 'false';
+    });
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.style.display = enabled ? 'inline-flex' : 'none';
+    });
+    document.getElementById('editHint').style.display = enabled ? 'block' : 'none';
+    document.getElementById('avatarEl').style.cursor = enabled ? 'pointer' : 'default';
+    document.getElementById('avatarEl').onclick = enabled
+      ? () => document.getElementById('avatarInput').click()
+      : null;
+    const adminBtn = document.getElementById('adminBtn');
+    if (enabled) {
+      adminBtn.textContent = '🔓 Quitter Admin';
+      adminBtn.classList.add('active');
+    } else {
+      adminBtn.textContent = '🔒 Admin';
+      adminBtn.classList.remove('active');
+    }
+  }
+
+  // Start locked
+  setEditing(false);
+
+  // ─── ADMIN TOGGLE ───
+  function toggleAdmin() {
+    if (isAdmin) {
+      isAdmin = false;
+      setEditing(false);
+    } else {
+      document.getElementById('loginOverlay').classList.add('open');
+      setTimeout(() => document.getElementById('pwInput').focus(), 100);
+    }
+  }
+
+  function checkPassword() {
+    const input = document.getElementById('pwInput');
+    const err = document.getElementById('loginError');
+    if (input.value === ADMIN_PASSWORD) {
+      isAdmin = true;
+      setEditing(true);
+      closeLogin();
+    } else {
+      err.textContent = 'Mot de passe incorrect. Réessayez.';
+      input.value = '';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  }
+
+  function closeLogin() {
+    document.getElementById('loginOverlay').classList.remove('open');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('loginError').textContent = '';
+  }
+
+  document.getElementById('loginOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeLogin();
+  });
+
+  // ─── AVATAR UPLOAD ───
+  document.getElementById('avatarInput').addEventListener('change', function() {
+    if (!isAdmin) return;
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('avatarImg').src = e.target.result;
+      document.getElementById('avatarEl').classList.add('has-photo');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Update avatar initial when name changes
+  document.querySelector('h1 em').addEventListener('input', function() {
+    const initial = this.textContent.trim()[0] || 'Y';
+    document.getElementById('avatarInitial').textContent = initial.toUpperCase();
+  });
+
+  // ─── ADD SKILL ───
+  function addSkill() {
+    if (!isAdmin) return;
+    const name = prompt('Nom de la compétence :');
+    if (!name) return;
+    const level = prompt('Niveau (0-100) :') || '70';
+    const icons = ['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
+    const icon = icons[Math.floor(Math.random() * icons.length)];
+    const card = document.createElement('div');
+    card.className = 'skill-card reveal revealed';
+    card.innerHTML = `
+      <div class="skill-icon">${icon}</div>
+      <div class="skill-name">${name}</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:${Math.min(100,parseInt(level))}%"></div></div>
+    `;
+    document.getElementById('skillsGrid').appendChild(card);
+  }
+
+  // ─── MODAL ───
+  let modalType = '';
+  function openModal(type) {
+    if (!isAdmin) return;
+    modalType = type;
+    const overlay = document.getElementById('modalOverlay');
+    const title = document.getElementById('modalTitle');
+    const form = document.getElementById('modalForm');
+    if (type === 'experience') {
+      title.textContent = 'Ajouter une expérience';
+      form.innerHTML = `
+        <div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2024 — 2025"/></div>
+        <div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade de Mathématiques"/></div>
+        <div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale — Casablanca"/></div>
+        <div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre expérience..."></textarea></div>
+      `;
+    } else {
+      title.textContent = 'Ajouter un projet';
+      form.innerHTML = `
+        <div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div>
+        <div class="form-group"><label>Titre du projet</label><input id="m_title" type="text" placeholder="Ex: Application de calcul numérique"/></div>
+        <div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez votre projet..."></textarea></div>
+      `;
+    }
+    overlay.classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function saveModal() {
+    if (modalType === 'experience') {
+      const date = document.getElementById('m_date').value;
+      const title = document.getElementById('m_title').value;
+      const org = document.getElementById('m_org').value;
+      const desc = document.getElementById('m_desc').value;
+      if (!title) return;
+      const item = document.createElement('div');
+      item.className = 'timeline-item reveal revealed';
+      item.innerHTML = `
+        <div class="timeline-date" contenteditable="true">${date}</div>
+        <div class="timeline-title" contenteditable="true">${title}</div>
+        <div class="timeline-org" contenteditable="true">${org}</div>
+        <div class="timeline-desc" contenteditable="true">${desc}</div>
+      `;
+      document.getElementById('timeline').insertBefore(item, document.getElementById('timeline').lastElementChild);
+    } else {
+      const tag = document.getElementById('m_tag').value || 'Projet';
+      const title = document.getElementById('m_title').value;
+      const desc = document.getElementById('m_desc').value;
+      if (!title) return;
+      const card = document.createElement('div');
+      card.className = 'project-card reveal revealed';
+      card.innerHTML = `
+        <span class="project-tag">${tag}</span>
+        <div class="project-title" contenteditable="true">${title}</div>
+        <div class="project-desc" contenteditable="true">${desc}</div>
+      `;
+      document.getElementById('projectsGrid').appendChild(card);
+    }
+    closeModal();
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─── CONTACT FORM ───
+  function handleSend(btn) {
+    btn.textContent = '✓ Message envoyé !';
+    btn.style.background = 'var(--accent2)';
+    setTimeout(() => {
+      btn.textContent = 'Envoyer le message';
+      btn.style.background = '';
+    }, 3000);
+  }
+
+  // ─── ANIMATE SKILL BARS ON LOAD ───
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.skill-fill').forEach(fill => {
+        const w = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(() => fill.style.width = w, 100);
+      });
+    }, 500);
+  });
+</script>
+</body>
+</html>
