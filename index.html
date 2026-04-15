@@ -1,1895 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio — 2Bac Sciences Maths 2025/2026</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg: #0b0e14;
-      --surface: #13171f;
-      --surface2: #1c2130;
-      --accent: #c8f04a;
-      --accent2: #4af0c8;
-      --text: #e8ecf0;
-      --muted: #7a8494;
-      --border: rgba(200,240,74,0.12);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
-
-    /* ─── NOISE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.6;
-    }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 3rem;
-      backdrop-filter: blur(20px);
-      background: rgba(11,14,20,0.7);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--accent); }
-
-    /* ─── HERO ─── */
-    #hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 8rem 3rem 4rem;
-      position: relative;
-    }
-
-    .hero-left { z-index: 1; }
-
-    .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      line-height: 1.05;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-desc {
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
-    }
-
-    .btn {
-      padding: 0.85rem 2rem;
-      border-radius: 3px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.25s;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #0b0e14;
-      border: 2px solid var(--accent);
-      font-weight: 500;
-    }
-
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 2px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    /* ─── HERO RIGHT (CARD) ─── */
-    .hero-right {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeIn 1s 0.5s forwards;
-    }
-
-    .id-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      width: 320px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .id-card::before {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 160px; height: 160px;
-      background: radial-gradient(circle, rgba(200,240,74,0.15), transparent 70%);
-      border-radius: 50%;
-    }
-
-    .card-avatar {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      font-family: 'Playfair Display', serif;
-      color: #0b0e14;
-      font-weight: 700;
-      cursor: pointer;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .card-avatar img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      display: none;
-    }
-
-    .card-avatar.has-photo .avatar-initial { display: none; }
-    .card-avatar.has-photo img { display: block; }
-
-    .card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .card-role {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .card-stat {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-    }
-
-    .card-stat:last-child { border-bottom: none; }
-
-    .stat-label {
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-    }
-
-    .stat-val { font-weight: 400; }
-
-    /* ─── FLOATING MATH ─── */
-    .math-bg {
-      position: absolute;
-      top: 0; right: 0;
-      width: 50%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0.04;
-    }
-
-    .math-symbol {
-      position: absolute;
-      font-family: 'Playfair Display', serif;
-      color: var(--accent);
-      font-size: var(--sz);
-      top: var(--top);
-      left: var(--left);
-      animation: float var(--dur) ease-in-out infinite alternate;
-    }
-
-    @keyframes float {
-      from { transform: translateY(0) rotate(0deg); }
-      to { transform: translateY(-20px) rotate(5deg); }
-    }
-
-    /* ─── SECTIONS ─── */
-    section {
-      padding: 6rem 3rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 3.5rem;
-    }
-
-    .section-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-    }
-
-    .section-line {
-      height: 1px;
-      width: 60px;
-      background: var(--accent);
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-    }
-
-    /* ─── ABOUT ─── */
-    #about { background: var(--surface); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .editable {
-      outline: none;
-      transition: background 0.2s;
-      border-radius: 4px;
-      padding: 4px 6px;
-      margin: -4px -6px;
-    }
-
-    .editable:focus {
-      background: rgba(200,240,74,0.07);
-      box-shadow: 0 0 0 1px var(--accent);
-    }
-
-    .about-text p {
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 1.2rem;
-      font-size: 0.97rem;
-    }
-
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .stat-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .stat-box .big {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      color: var(--accent);
-      font-weight: 700;
-      display: block;
-    }
-
-    .stat-box .label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── SKILLS ─── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .skill-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .skill-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-    }
-
-    .skill-icon {
-      font-size: 1.6rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .skill-name {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.8rem;
-      text-transform: uppercase;
-    }
-
-    .skill-bar {
-      height: 3px;
-      background: var(--surface2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .skill-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 2px;
-      transition: width 1s ease;
-    }
-
-    /* ─── EXPERIENCES ─── */
-    #experiences { background: var(--surface); }
-
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-    }
-
-    .timeline-item {
-      position: relative;
-      padding: 0 0 3rem 2.5rem;
-    }
-
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -4px; top: 6px;
-      width: 9px; height: 9px;
-      background: var(--accent);
-      border-radius: 50%;
-    }
-
-    .timeline-date {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .timeline-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .timeline-org {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .add-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      border: 1px dashed var(--accent);
-      background: transparent;
-      padding: 0.7rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: background 0.2s;
-      margin-top: 1rem;
-    }
-
-    .add-btn:hover { background: rgba(200,240,74,0.07); }
-
-    /* ─── PROJECTS ─── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      transition: border-color 0.25s, transform 0.25s;
-    }
-
-    .project-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-5px);
-    }
-
-    .project-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      background: rgba(200,240,74,0.12);
-      color: var(--accent);
-      padding: 0.3rem 0.7rem;
-      border-radius: 3px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      display: inline-block;
-      margin-bottom: 1rem;
-    }
-
-    .project-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      margin-bottom: 0.7rem;
-    }
-
-    .project-desc {
-      font-size: 0.87rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* ─── CONTACT ─── */
-    #contact { background: var(--surface); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .contact-intro {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--text);
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
-
-    .contact-link-icon {
-      font-size: 1.2rem;
-      width: 28px;
-      text-align: center;
-    }
-
-    .contact-link-text {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.05em;
-    }
-
-    /* Contact Form */
-    .form-group { margin-bottom: 1.2rem; }
-
-    .form-group label {
-      display: block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.85rem 1rem;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus { border-color: var(--accent); }
-
-    .form-group textarea { height: 120px; resize: vertical; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      z-index: 1;
-      position: relative;
-    }
-
-    /* ─── EDIT HINT ─── */
-    .edit-hint {
-      position: fixed;
-      bottom: 2rem; right: 2rem;
-      background: var(--surface2);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      padding: 0.8rem 1.2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      z-index: 200;
-      animation: pulse 3s ease-in-out infinite;
-      display: none; /* hidden until admin unlocked */
-    }
-
-    /* ─── ADMIN BUTTON ─── */
-    .admin-btn {
-      position: fixed;
-      bottom: 2rem; left: 2rem;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.7rem 1.2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      z-index: 200;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .save-btn {
-      position: fixed;
-      bottom: 2rem; left: 9rem;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      padding: 0.7rem 1.2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: #0b0e14;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      z-index: 200;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .save-btn:hover { opacity: 0.85; transform: translateY(-2px); }
-
-    /* ─── LOGIN MODAL ─── */
-    #loginOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(12px);
-      z-index: 400;
-      align-items: center;
-      justify-content: center;
-    }
-    #loginOverlay.open { display: flex; }
-    .login-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      width: 90%;
-      max-width: 360px;
-      text-align: center;
-    }
-    .login-box h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      margin-bottom: 0.5rem;
-    }
-    .login-box p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 1.8rem;
-    }
-    .login-box input {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.85rem 1rem;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.9rem;
-      text-align: center;
-      letter-spacing: 0.2em;
-      outline: none;
-      margin-bottom: 1rem;
-      transition: border-color 0.2s;
-    }
-    .login-box input:focus { border-color: var(--accent); }
-    .login-box input.error { border-color: #f04a4a; animation: shake 0.3s; }
-    .login-error {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: #f04a4a;
-      margin-bottom: 0.8rem;
-      min-height: 1rem;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s, transform 0.7s;
-    }
-
-    .revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ─── MODAL ─── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px);
-      z-index: 300;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      width: 90%;
-      max-width: 480px;
-    }
-
-    .modal h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal .form-group input,
-    .modal .form-group textarea {
-      background: var(--bg);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
-    }
-
-    /* ─── STAT BOX CLICKABLE ─── */
-    .stat-box { cursor: default; position: relative; }
-    .stat-box.admin-active { cursor: pointer; }
-    .stat-box.admin-active:hover { border-color: var(--accent); }
-
-    /* ─── PROJECT CARD NEW ─── */
-    .project-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.8rem;
-    }
-    .proj-delete-btn {
-      background: transparent;
-      border: 1px solid rgba(240,74,74,0.3);
-      color: #f04a4a;
-      border-radius: 4px;
-      width: 24px; height: 24px;
-      font-size: 0.7rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .proj-delete-btn:hover { background: rgba(240,74,74,0.15); }
-
-    .project-attachments {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .attach-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      border-radius: 20px;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-      transition: opacity 0.2s;
-      max-width: 180px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .attach-chip:hover { opacity: 0.8; }
-    .attach-chip.type-link  { background: rgba(74,240,200,0.12); color: var(--accent2); border: 1px solid rgba(74,240,200,0.2); }
-    .attach-chip.type-pdf   { background: rgba(240,100,74,0.12); color: #f0a04a;        border: 1px solid rgba(240,100,74,0.2); }
-    .attach-chip.type-image { background: rgba(200,240,74,0.12); color: var(--accent);  border: 1px solid rgba(200,240,74,0.2); }
-    .attach-chip .chip-del  { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.7rem; opacity: 0.6; padding: 0; margin-left: 2px; display: none; }
-    .attach-chip .chip-del:hover { opacity: 1; }
-
-    .proj-attach-btn {
-      margin-top: 0.8rem;
-      background: transparent;
-      border: 1px dashed var(--border);
-      border-radius: 6px;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      width: 100%;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .proj-attach-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ─── ATTACH TYPE BUTTONS ─── */
-    .attach-type-btn {
-      padding: 0.5rem 1.2rem;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .attach-type-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,240,74,0.07); }
-
-    /* ─── CONTACT DELETE ─── */
-    .contact-link { position: relative; }
-    .contact-del-btn {
-      background: transparent;
-      border: none;
-      color: #f04a4a;
-      cursor: pointer;
-      font-size: 0.75rem;
-      margin-left: auto;
-      opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-    .contact-del-btn:hover { opacity: 1; }
-
-    /* ─── SEND STATUS ─── */
-    #sendStatus { animation: fadeUp 0.4s forwards; }
-
-    /* ─── IMAGE PREVIEW ─── */
-    .img-preview {
-      width: 100%;
-      max-height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-top: 0.8rem;
-      display: none;
-    }
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; gap: 3rem; }
-      .hero-right { display: none; }
-      section { padding: 4rem 1.5rem; }
-      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-      .edit-hint { display: none; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iness ❤️ Love Levels - BY HAITAM LOVE YOUU</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Orbitron:wght@400;700;900&family=Pacifico&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 600% 600%;
+            animation: gradientShift 20s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: floatHearts 8s infinite linear;
+            color: #ff69b4;
+        }
+
+        @keyframes floatHearts {
+            0% { 
+                transform: translateY(100vh) rotate(0deg) scale(0.5); 
+                opacity: 0; 
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) rotate(720deg) scale(1); 
+                opacity: 0; 
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5em, 8vw, 5em);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.5), 0 0 30px #ff1493;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+        }
+
+        @keyframes titleGlow {
+            0% { 
+                text-shadow: 4px 4px 0px rgba(0,0,0,0.5), 0 0 20px #ff6b6b, 0 0 40px #ff1493;
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 4px 4px 0px rgba(0,0,0,0.5), 0 0 40px #ff6b6b, 0 0 60px #ff1493;
+                transform: scale(1.05);
+            }
+        }
+
+        .love-level {
+            display: none;
+            text-align: center;
+            animation: levelSlide 1s ease-out;
+            min-height: 70vh;
+            padding: 40px 20px;
+        }
+
+        .love-level.active {
+            display: block;
+        }
+
+        @keyframes levelSlide {
+            0% { 
+                opacity: 0; 
+                transform: translateY(100px) scale(0.9); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .level-title {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2em, 6vw, 4em);
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #fff, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .love-photo {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid rgba(255,255,255,0.3);
+            box-shadow: 
+                0 0 50px rgba(255,20,147,0.6),
+                inset 0 0 50px rgba(255,255,255,0.2);
+            margin: 30px auto;
+            animation: photoFloat 6s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .love-photo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 0 80px rgba(255,20,147,0.8),
+                inset 0 0 80px rgba(255,255,255,0.4);
+        }
+
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        .love-message {
+            font-size: clamp(1.2em, 4vw, 1.8em);
+            line-height: 1.6;
+            margin: 40px 0;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .love-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fact {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .fact:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 20px 40px rgba(255,107,107,0.3);
+        }
+
+        .fact-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5em;
+            color: #ffd700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ff1493, #ffd700);
+            width: 0%;
+            transition: width 1s ease-out;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff1493;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '♥';
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            animation: heartBeat 1s infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.3); }
+        }
+
+        .btn-next {
+            background: linear-gradient(45deg, #ff6b6b, #ff1493, #ff69b4);
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.6em;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            box-shadow: 0 15px 35px rgba(255,107,107,0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(255,107,107,0.6);
+        }
+
+        .final-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #fff176);
+            color: #333 !important;
+            font-size: 2em !important;
+            padding: 25px 60px !important;
+        }
+
+        @media (max-width: 768px) {
+            .love-photo { width: 250px; height: 250px; }
+            .love-message { font-size: 1.1em; padding: 20px; }
+            .fact { padding: 20px 15px; }
+        }
+    </style>
 </head>
 <body>
+    <div class="hearts-bg" id="hearts"></div>
 
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-logo">Portfolio — 2Bac SM</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experiences">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+    <div class="container">
+        <!-- LEVEL 1 -->
+        <div class="love-level active" id="level1">
+            <h1> TA ILA MCHITI REMEMBER ME BABE THIS WAY</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%;"></div>
+            </div>
+            <div class="level-title">Level 1: First Sight 💘</div>
+            <img src="image.png" 
+                 alt="Iness - My Everything" class="love-photo">
+            <div class="love-message">
+                The moment I saw you, my heart said: <br><br>
+                <strong>"GAME OVER for single life! 🎮"</strong><br><br>
+                You're more beautiful than any sunset, any song, any dream!
+            </div>
+            <button class="btn-next" onclick="nextLevel(2)">Level Up! →</button>
+        </div>
 
-<!-- ─── HERO ─── -->
-<section id="hero">
+        <!-- LEVEL 2 -->
+        <div class="love-level" id="level2">
+            <h1>🎮 INESS LOVE LEVELS 🎮</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress2"></div>
+            </div>
+            <div class="level-title">Level 2: Heart Captured 💖</div>
+            <img src="1000110041.jpg" 
+                 alt="Iness - My Everything" class="love-photo">
+            <div class="love-message">
+                You stole my heart so fast, I didn't even see it coming! <br><br>
+                Now I wake up smiling, go to bed dreaming, and spend every day loving you more!
+            </div>
+            <div class="love-facts">
+                <div class="fact">
+                    <span class="fact-number">1️⃣</span>
+                    Favorite smile in the world
+                </div>
+                <div class="fact">
+                    <span class="fact-number">2️⃣</span>
+                    Best hug ever
+                </div>
+                <div class="fact">
+                    <span class="fact-number">3️⃣</span>
+                    My sunshine ☀️
+                </div>
+            </div>
+            <button class="btn-next" onclick="nextLevel(3)">Level Up! →</button>
+        </div>
 
-  <!-- floating math symbols -->
-  <div class="math-bg" aria-hidden="true">
-    <span class="math-symbol" style="--sz:3rem;--top:10%;--left:10%;--dur:4s">∫</span>
-    <span class="math-symbol" style="--sz:2rem;--top:30%;--left:25%;--dur:5s">Σ</span>
-    <span class="math-symbol" style="--sz:4rem;--top:55%;--left:5%;--dur:6s">π</span>
-    <span class="math-symbol" style="--sz:2.5rem;--top:70%;--left:40%;--dur:4.5s">√</span>
-    <span class="math-symbol" style="--sz:3.5rem;--top:20%;--left:55%;--dur:7s">∞</span>
-    <span class="math-symbol" style="--sz:2rem;--top:80%;--left:60%;--dur:5.5s">Δ</span>
-    <span class="math-symbol" style="--sz:3rem;--top:45%;--left:75%;--dur:4s">θ</span>
-    <span class="math-symbol" style="--sz:2.5rem;--top:10%;--left:80%;--dur:6s">λ</span>
-  </div>
+        <!-- LEVEL 3 -->
+        <div class="love-level" id="level3">
+            <h1>🎮 INESS LOVE LEVELS 🎮</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress3"></div>
+            </div>
+            <div class="level-title">Level 3: Soulmate Unlocked 👫</div>
+            <img src="1000110042.jpg" 
+                 alt="Iness - My Everything" class="love-photo">
+<div class="love-message">
+    You're not just my girlfriend... <br><br>
+    
+    You're my <strong>BEST FRIEND</strong> 💕<br>
+    My <strong>HBIBA DIYALI</strong> 🌍<br>
+    My <strong>FOREVER HOME</strong> 🏠<br>
+    My <strong>SUNSHINE</strong> ☀️<br>
+    My <strong>FAVORITE STAR</strong> 🌟<br>
+    My <strong>SWEETEST TREAT</strong> 🎂<br>
+    My <strong>HAPPINESS SOURCE</strong> 😂<br>
+    My <strong>COMFORT ZONE</strong> 🤗<br>
+    My <strong>PERFECT KISS</strong> 💋<br>
+    My <strong>FAVORITE SONG</strong> 🎶<br><br>
+    
+    My <strong>RAINBOW</strong> 🌈<br>
+    My <strong>QUEEN</strong> 👑<br>
+    My <strong>SUPERHERO</strong> 🦸‍♀️<br>
+    My <strong>FAVORITE STORY</strong> 📚<br>
+    My <strong>DREAM GIRL</strong> 🌙<br>
+    My <strong>TREASURE</strong> 💎<br>
+    My <strong>SPACE ADVENTURE</strong> 🚀<br>
+    
+    My <strong>PRETTIEST FLOWER</strong> 🌺<br>
+    My <strong>DANCE PARTNER</strong> 🕺💃<br>
+    My <strong>FAVE NOTIFICATION</strong> 📱<br>
+    My <strong>BEST ALARM</strong> ⏰<br>
+    My <strong>FOREVER</strong> ♾️<br>
+    My <strong>OCEAN WAVES</strong> 🌊<br>
+    My <strong>BEST GIFT</strong> 🎁<br><br>
+ 
+    My <strong>L9LYBBB DIYALI</strong> 🍫<br>
+    My <strong>MIDNIGHT CHATS</strong> 🌙<br>
+    My <strong>BEDTIME STORY</strong> 📖<br>
+    My <strong>SWEET DREAMS</strong> 💤<br>
+    My <strong>SUNRISE</strong> 🌅<br>
+    My <strong>WISH UPON STAR</strong> ⭐<br>
+    My <strong>HEARTBEAT</strong> ❤️<br>
+    My <strong>KBIDAA DIYALI</strong> 🫶<br>
+    My <strong>HBIBA DIYALI</strong> 👫<br><br>
+    
+    <strong>I CHOOSE YOU EVERY SINGLE DAY!</strong> 😍♾️💖
+</div> 
+            <div class="love-facts">
+                <div class="fact">
+                    <span class="fact-number">🔥</span>
+                    Hotter than summer
+                </div>
+                <div class="fact">
+                    <span class="fact-number">⭐</span>
+                    Brighter than all the stars
+                </div>
+                <div class="fact">
+                    <span class="fact-number">🎵</span>
+                    Better than my favorite song
+                </div>
+            </div>
+            <button class="btn-next" onclick="nextLevel(4)">MAX LEVEL! →</button>
+        </div>
 
-  <div class="hero-left">
-    <p class="hero-tag">🇲🇦 Maroc · Sciences Mathématiques · 2Bac</p>
-    <h1>Bonjour,<br>je suis <em contenteditable="true" data-save="hero-name">Votre Nom</em></h1>
-    <p class="hero-desc" contenteditable="true" data-save="hero-desc">
-      Étudiant passionné en 2ème Baccalauréat Sciences Mathématiques. Curieux, ambitieux et toujours prêt à explorer de nouveaux horizons — des maths aux technologies, en passant par les sciences.
-    </p>
-    <div class="hero-cta">
-      <a href="#contact" class="btn btn-primary">Me contacter</a>
-      <a href="#experiences" class="btn btn-ghost">Voir mes expériences</a>
+        <!-- FINAL LEVEL -->
+        <div class="love-level" id="level4">
+            <h1>🎮 MAX LOVE LEVEL ACHIEVED! 🏆</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+            <div class="level-title" style="font-size: clamp(2.5em, 8vw, 5em);">ETERNAL LOVE ♾️💖</div>
+            <img src="1000110043.jpg" 
+                 alt="Iness - My Everything" class="love-photo">
+            <div class="love-message" style="font-size: clamp(1.4em, 5vw, 2em);">
+                <strong>INESS,</strong><br><br>
+                You're my <em>everything</em>. My past, present, future.<br>
+                I love your laugh, your eyes, your heart, your everything.<br><br>
+                <span style="font-size: 3em; color: #ffd700;">I LOVE YOU MORE THAN WORDS! 😍💕</span><br><br>
+                Forever yours,<br>
+                <span style="font-family: 'Pacifico', cursive; font-size: 2em;">Your HBIBA ILA KNT MZL ❤️</span>
+            </div>
+            <button class="btn-next final-btn" onclick="restartGame()">Play Again? 💕</button>
+        </div>
     </div>
-  </div>
 
-  <div class="hero-right">
-    <div class="id-card">
-      <div class="card-avatar" id="avatarEl" onclick="document.getElementById('avatarInput').click()" title="Click to upload photo">
-        <span class="avatar-initial" id="avatarInitial">Y</span>
-        <img id="avatarImg" src="" alt="Profile"/>
-      </div>
-      <input type="file" id="avatarInput" accept="image/*" style="display:none"/>
-      <div class="card-name" contenteditable="true" data-save="card-name">Votre Nom</div>
-      <div class="card-role">2Bac Sciences Mathématiques</div>
-      <div class="card-stat">
-        <span class="stat-label">Ville</span>
-        <span class="stat-val" contenteditable="true" data-save="card-city">Maroc</span>
-      </div>
-      <div class="card-stat">
-        <span class="stat-label">Lycée</span>
-        <span class="stat-val" contenteditable="true" data-save="card-lycee">Votre Lycée</span>
-      </div>
-      <div class="card-stat">
-        <span class="stat-label">Filière</span>
-        <span class="stat-val">Sciences Maths</span>
-      </div>
-      <div class="card-stat">
-        <span class="stat-label">Année</span>
-        <span class="stat-val">2024–2025</span>
-      </div>
-    </div>
-  </div>
-</section>
+    <script>
+        let currentLevel = 1;
+        const totalLevels = 4;
 
-<!-- ─── ABOUT ─── -->
-<section id="about">
-  <div class="section-header reveal">
-    <span class="section-num">01</span>
-    <div class="section-line"></div>
-    <h2>À propos</h2>
-  </div>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p contenteditable="true" data-save="about-p1">
-        Je suis un étudiant en terminale Sciences Mathématiques, passionné par les mathématiques, la physique et l'informatique. Mon parcours scolaire m'a appris à résoudre des problèmes complexes avec rigueur et créativité.
-      </p>
-      <p contenteditable="true" data-save="about-p2">
-        En dehors des cours, j'aime participer à des olympiades de mathématiques, explorer la programmation et m'impliquer dans des activités parascolaires. Mon objectif est d'intégrer une grande école d'ingénieurs ou une université de prestige.
-      </p>
-      <p contenteditable="true" data-save="about-p3">
-        Je crois fermement que la curiosité intellectuelle est la clé du succès. Chaque problème est une opportunité d'apprendre quelque chose de nouveau.
-      </p>
-    </div>
-    <div class="about-stats reveal">
-      <div class="stat-box">
-        <span class="big" contenteditable="true" data-save="stat-avg">18</span>
-        <span class="label">Moyenne / 20</span>
-      </div>
-      <div class="stat-box">
-        <span class="big" contenteditable="true" data-save="stat-projects">3+</span>
-        <span class="label">Projets réalisés</span>
-      </div>
-      <div class="stat-box">
-        <span class="big" contenteditable="true" data-save="stat-langs">2</span>
-        <span class="label">Langues maîtrisées</span>
-      </div>
-      <div class="stat-box">
-        <span class="big" contenteditable="true" data-save="stat-activities">5+</span>
-        <span class="label">Activités extra</span>
-      </div>
-    </div>
-  </div>
-</section>
+        // Floating hearts background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            const hearts = ['💖', '💕', '💗', '💓', '💞', '💝', '🧡'];
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 18) + 'px';
+            document.getElementById('hearts').appendChild(heart);
 
-<!-- ─── SKILLS ─── -->
-<section id="skills">
-  <div class="section-header reveal">
-    <span class="section-num">02</span>
-    <div class="section-line"></div>
-    <h2>Compétences</h2>
-  </div>
-  <div class="skills-grid" id="skillsGrid">
-    <div class="skill-card reveal">
-      <div class="skill-icon">📐</div>
-      <div class="skill-name">Mathématiques</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-    </div>
-    <div class="skill-card reveal">
-      <div class="skill-icon">⚗️</div>
-      <div class="skill-name">Physique-Chimie</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-    </div>
-    <div class="skill-card reveal">
-      <div class="skill-icon">💻</div>
-      <div class="skill-name">Programmation</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
-    </div>
-    <div class="skill-card reveal">
-      <div class="skill-icon">🇫🇷</div>
-      <div class="skill-name">Français</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-    </div>
-    <div class="skill-card reveal">
-      <div class="skill-icon">🇬🇧</div>
-      <div class="skill-name">Anglais</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-    </div>
-    <div class="skill-card reveal">
-      <div class="skill-icon">🔬</div>
-      <div class="skill-name">Sciences de la Vie</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
-    </div>
-  </div>
-  <button class="add-btn reveal" id="addSkillBtn" style="margin-top:2rem">＋ Ajouter une compétence</button>
-</section>
+            setTimeout(() => heart.remove(), 10000);
+        }
 
-<!-- ─── EXPERIENCES ─── -->
-<section id="experiences">
-  <div class="section-header reveal">
-    <span class="section-num">03</span>
-    <div class="section-line"></div>
-    <h2>Expériences</h2>
-  </div>
-  <div class="timeline" id="timeline">
-    <div class="timeline-item reveal">
-      <div class="timeline-date" contenteditable="true" class="editable">2024 — Présent</div>
-      <div class="timeline-title" contenteditable="true" class="editable">2ème Baccalauréat Sciences Mathématiques</div>
-      <div class="timeline-org" contenteditable="true" class="editable">Lycée — Votre Ville, Maroc</div>
-      <div class="timeline-desc" contenteditable="true" class="editable">Préparation intensive au baccalauréat avec une filière axée sur les mathématiques avancées, la physique et les sciences de l'ingénieur.</div>
-    </div>
-    <div class="timeline-item reveal">
-      <div class="timeline-date" contenteditable="true" class="editable">2023 — 2024</div>
-      <div class="timeline-title" contenteditable="true" class="editable">1ère Baccalauréat Sciences Expérimentales</div>
-      <div class="timeline-org" contenteditable="true" class="editable">Lycée — Votre Ville, Maroc</div>
-      <div class="timeline-desc" contenteditable="true" class="editable">Mention Très Bien. Participation aux olympiades régionales de mathématiques.</div>
-    </div>
-    <div class="timeline-item reveal">
-      <div class="timeline-date" contenteditable="true" class="editable">Été 2024</div>
-      <div class="timeline-title" contenteditable="true" class="editable">Stage / Activité bénévole</div>
-      <div class="timeline-org" contenteditable="true" class="editable">Organisation — Ville</div>
-      <div class="timeline-desc" contenteditable="true" class="editable">Décrivez ici votre stage, bénévolat ou toute activité parascolaire importante.</div>
-    </div>
-  </div>
-  <button class="add-btn reveal" id="addExpBtn">＋ Ajouter une expérience</button>
-</section>
+        setInterval(createHeart, 400);
 
-<!-- ─── PROJECTS ─── -->
-<section id="projects">
-  <div class="section-header reveal">
-    <span class="section-num">04</span>
-    <div class="section-line"></div>
-    <h2>Projets</h2>
-  </div>
-  <div class="projects-grid" id="projectsGrid">
-    <div class="project-card reveal" data-proj-id="p1">
-      <div class="project-card-top">
-        <span class="project-tag" contenteditable="true">Mathématiques</span>
-        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
-      </div>
-      <div class="project-title" contenteditable="true">Modélisation de suites numériques</div>
-      <div class="project-desc" contenteditable="true">Étude et visualisation de suites arithmétiques et géométriques à l'aide d'un programme Python.</div>
-      <div class="project-attachments"></div>
-      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
-    </div>
-    <div class="project-card reveal" data-proj-id="p2">
-      <div class="project-card-top">
-        <span class="project-tag" contenteditable="true">Physique</span>
-        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
-      </div>
-      <div class="project-title" contenteditable="true">Expérience sur le pendule simple</div>
-      <div class="project-desc" contenteditable="true">Travaux pratiques sur l'oscillateur harmonique. Mesure et analyse de la période d'oscillation.</div>
-      <div class="project-attachments"></div>
-      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
-    </div>
-    <div class="project-card reveal" data-proj-id="p3">
-      <div class="project-card-top">
-        <span class="project-tag" contenteditable="true">Personnel</span>
-        <button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>
-      </div>
-      <div class="project-title" contenteditable="true">Votre projet personnel</div>
-      <div class="project-desc" contenteditable="true">Décrivez ici un projet personnel, un devoir de recherche ou toute création dont vous êtes fier.</div>
-      <div class="project-attachments"></div>
-      <button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>
-    </div>
-  </div>
-  <button class="add-btn reveal" id="addProjBtn">＋ Ajouter un projet</button>
-</section>
+        function nextLevel(level) {
+            document.querySelectorAll('.love-level').forEach(lvl => {
+                lvl.classList.remove('active');
+            });
+            document.getElementById(`level${level}`).classList.add('active');
+            currentLevel = level;
+            
+            // Update progress bars
+            document.querySelectorAll('.progress-fill').forEach((bar, index) => {
+                if (index + 1 <= level) {
+                    bar.style.width = (100 / totalLevels * (index + 1)) + '%';
+                }
+            });
+        }
 
-<!-- ─── CONTACT ─── -->
-<section id="contact">
-  <div class="section-header reveal">
-    <span class="section-num">05</span>
-    <div class="section-line"></div>
-    <h2>Contact</h2>
-  </div>
-  <div class="contact-grid">
-    <div class="reveal">
-      <p class="contact-intro" contenteditable="true" data-save="contact-intro">
-        N'hésitez pas à me contacter pour toute collaboration, opportunité de stage, ou simplement pour échanger sur des sujets qui nous passionnent.
-      </p>
-      <div class="contact-links" id="contactLinksList">
-        <a class="contact-link" href="#">
-          <span class="contact-link-icon">📧</span>
-          <span class="contact-link-text" contenteditable="true" data-save="contact-email">haitambentalha60@gmail.com</span>
-          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
-        </a>
-        <a class="contact-link" href="#">
-          <span class="contact-link-icon">📱</span>
-          <span class="contact-link-text" contenteditable="true" data-save="contact-phone">+212 6XX XXX XXX</span>
-          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
-        </a>
-        <a class="contact-link" href="#">
-          <span class="contact-link-icon">🔗</span>
-          <span class="contact-link-text" contenteditable="true" data-save="contact-linkedin">linkedin.com/in/votre-profil</span>
-          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
-        </a>
-        <a class="contact-link" href="#">
-          <span class="contact-link-icon">📍</span>
-          <span class="contact-link-text" contenteditable="true" data-save="contact-city">Votre Ville, Maroc</span>
-          <button class="contact-del-btn admin-only" style="display:none" title="Supprimer">✕</button>
-        </a>
-      </div>
-      <button class="add-btn admin-only" id="addContactLinkBtn" style="display:none;margin-top:1rem">＋ Ajouter un lien</button>
-    </div>
-    <div class="reveal">
-      <div class="form-group">
-        <label>Votre nom</label>
-        <input type="text" id="contactName" placeholder="Ex: Ahmed El Mansouri"/>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="contactEmail" placeholder="exemple@email.com"/>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea id="contactMessage" placeholder="Écrivez votre message ici..."></textarea>
-      </div>
-      <button class="btn btn-primary" id="sendBtn">Envoyer le message</button>
-      <div id="sendStatus" style="margin-top:0.8rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--accent2);display:none"></div>
-    </div>
-  </div>
-</section>
+        function restartGame() {
+            currentLevel = 1;
+            document.querySelectorAll('.love-level').forEach(lvl => {
+                lvl.classList.remove('active');
+            });
+            document.getElementById('level1').classList.add('active');
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                bar.style.width = '25%';
+            });
+        }
 
-<!-- ─── FOOTER ─── -->
-<footer>
-  <span>© 2025/2026 · <span contenteditable="true" data-save="footer-name">Votre Nom</span></span>
-  <span>2Bac Sciences Mathématiques · 2025/2026 · Maroc 🇲🇦</span>
-</footer>
+        // Interactive facts hover effect
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.fact').forEach(fact => {
+                fact.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.1) rotate(3deg)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 300);
+                });
+            });
 
-<!-- ─── EDIT HINT ─── -->
-<div class="edit-hint" id="editHint">✏️ Mode édition actif — cliquez pour modifier</div>
-<button class="admin-btn" id="adminBtn">🔒 Admin</button>
-<button class="save-btn" id="saveBtn" style="display:none">☁️ Sauvegarder</button>
-
-<!-- ─── LOGIN MODAL ─── -->
-<div id="loginOverlay">
-  <div class="login-box">
-    <h3>Accès Admin</h3>
-    <p>ENTREZ VOTRE MOT DE PASSE</p>
-    <input type="password" id="pwInput" placeholder="••••••••"/>
-    <div class="login-error" id="loginError"></div>
-    <button class="btn btn-primary" id="pwSubmitBtn" style="width:100%">Déverrouiller</button>
-    <br/><br/>
-    <button class="btn btn-ghost" id="pwCancelBtn" style="width:100%;font-size:0.7rem;margin-top:0.5rem">Annuler</button>
-  </div>
-</div>
-
-<!-- ─── GENERAL MODAL ─── -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <h3 id="modalTitle">Ajouter</h3>
-    <div id="modalForm"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="modalCancelBtn">Annuler</button>
-      <button class="btn btn-primary" id="modalSaveBtn">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- ─── ATTACHMENT MODAL ─── -->
-<div class="modal-overlay" id="attachOverlay">
-  <div class="modal">
-    <h3>Ajouter une pièce jointe</h3>
-    <div style="display:flex;gap:0.8rem;margin-bottom:1.5rem;flex-wrap:wrap">
-      <button class="attach-type-btn active" data-type="link">🔗 Lien</button>
-      <button class="attach-type-btn" data-type="pdf">📄 PDF</button>
-      <button class="attach-type-btn" data-type="image">🖼️ Image</button>
-    </div>
-    <div id="attachForm"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="attachCancelBtn">Annuler</button>
-      <button class="btn btn-primary" id="attachSaveBtn">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- ─── CONTACT LINK MODAL ─── -->
-<div class="modal-overlay" id="contactLinkOverlay">
-  <div class="modal">
-    <h3>Ajouter un lien de contact</h3>
-    <div class="form-group">
-      <label>Icône (emoji)</label>
-      <input type="text" id="cl_icon" placeholder="Ex: 🐙" style="font-size:1.5rem;text-align:center"/>
-    </div>
-    <div class="form-group">
-      <label>Texte / URL</label>
-      <input type="text" id="cl_text" placeholder="Ex: github.com/mon-profil"/>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="clCancelBtn">Annuler</button>
-      <button class="btn btn-primary" id="clSaveBtn">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAbQcRPTRP3HjP6h1mXuQKR0AQ860vn-1w",
-  authDomain: "myportfolio-1cb5b.firebaseapp.com",
-  databaseURL: "https://myportfolio-1cb5b-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "myportfolio-1cb5b",
-  storageBucket: "myportfolio-1cb5b.firebasestorage.app",
-  messagingSenderId: "415483916179",
-  appId: "1:415483916179:web:68dae56f3d0f76e1930266"
-};
-const app = initializeApp(firebaseConfig);
-const db  = getDatabase(app);
-
-// ══════════════════════════════════════════════
-// COLLECT ALL DATA
-// ══════════════════════════════════════════════
-function collectData() {
-  var data = {};
-  document.querySelectorAll('[data-save]').forEach(function(el) {
-    data[el.getAttribute('data-save')] = el.innerHTML;
-  });
-
-  // Projects (with attachments)
-  var projs = [];
-  document.querySelectorAll('#projectsGrid .project-card').forEach(function(card) {
-    var attachments = [];
-    card.querySelectorAll('.attach-chip').forEach(function(chip) {
-      attachments.push({
-        type:  chip.dataset.atype  || 'link',
-        label: chip.dataset.alabel || '',
-        url:   chip.dataset.aurl   || ''
-      });
-    });
-    projs.push({
-      tag:         (card.querySelector('.project-tag')   ||{}).innerHTML||'',
-      title:       (card.querySelector('.project-title') ||{}).innerHTML||'',
-      desc:        (card.querySelector('.project-desc')  ||{}).innerHTML||'',
-      attachments: attachments
-    });
-  });
-  data['_projects'] = projs;
-
-  // Experiences
-  var exps = [];
-  document.querySelectorAll('#timeline .timeline-item').forEach(function(item) {
-    exps.push({
-      date:  (item.querySelector('.timeline-date') ||{}).innerHTML||'',
-      title: (item.querySelector('.timeline-title')||{}).innerHTML||'',
-      org:   (item.querySelector('.timeline-org')  ||{}).innerHTML||'',
-      desc:  (item.querySelector('.timeline-desc') ||{}).innerHTML||''
-    });
-  });
-  data['_experiences'] = exps;
-
-  // Skills
-  var skills = [];
-  document.querySelectorAll('#skillsGrid .skill-card').forEach(function(card) {
-    skills.push({
-      icon:  (card.querySelector('.skill-icon')||{}).innerHTML||'',
-      name:  (card.querySelector('.skill-name')||{}).innerHTML||'',
-      level: (card.querySelector('.skill-fill')||{style:{}}).style.width||'70%'
-    });
-  });
-  data['_skills'] = skills;
-
-  // Contact links
-  var clinks = [];
-  document.querySelectorAll('#contactLinksList .contact-link').forEach(function(a) {
-    clinks.push({
-      icon: (a.querySelector('.contact-link-icon')||{}).innerHTML||'',
-      text: (a.querySelector('.contact-link-text')||{}).innerHTML||''
-    });
-  });
-  data['_contactlinks'] = clinks;
-
-  // Avatar
-  var img = document.getElementById('avatarImg');
-  if (img && img.src && img.src.startsWith('data:')) data['_avatar'] = img.src;
-
-  return data;
-}
-
-// ══════════════════════════════════════════════
-// SAVE
-// ══════════════════════════════════════════════
-function saveToFirebase() {
-  var btn = document.getElementById('saveBtn');
-  if (btn) { btn.textContent = '⏳ Sauvegarde...'; btn.disabled = true; }
-  set(ref(db, 'portfolio'), collectData())
-    .then(function() {
-      if (btn) { btn.textContent = '✅ Sauvegardé !'; btn.disabled = false; }
-      setTimeout(function() { if (btn) btn.textContent = '☁️ Sauvegarder'; }, 2500);
-    })
-    .catch(function(err) {
-      console.error(err);
-      if (btn) { btn.textContent = '❌ Erreur'; btn.disabled = false; }
-    });
-}
-
-// ══════════════════════════════════════════════
-// RESTORE
-// ══════════════════════════════════════════════
-function makeAttachChip(att, adminMode) {
-  var icons = { link:'🔗', pdf:'📄', image:'🖼️' };
-  var chip = document.createElement('a');
-  chip.className = 'attach-chip type-' + att.type;
-  chip.href = att.url;
-  chip.target = '_blank';
-  chip.dataset.atype  = att.type;
-  chip.dataset.alabel = att.label;
-  chip.dataset.aurl   = att.url;
-  var delBtn = '<button class="chip-del" title="Supprimer" style="'+(adminMode?'display:inline':'display:none')+'">✕</button>';
-  chip.innerHTML = (icons[att.type]||'📎') + ' ' + (att.label||att.url).substring(0,22) + delBtn;
-  chip.querySelector('.chip-del').addEventListener('click', function(e) {
-    e.preventDefault(); e.stopPropagation();
-    chip.remove();
-  });
-  return chip;
-}
-
-function buildContactLink(icon, text, adminMode) {
-  var a = document.createElement('a');
-  a.className = 'contact-link';
-  a.href = '#';
-  a.innerHTML =
-    '<span class="contact-link-icon">'+icon+'</span>'+
-    '<span class="contact-link-text" contenteditable="'+(adminMode?'true':'false')+'">'+text+'</span>'+
-    '<button class="contact-del-btn admin-only" style="'+(adminMode?'display:block':'display:none')+'" title="Supprimer">✕</button>';
-  a.querySelector('.contact-del-btn').addEventListener('click', function(e) {
-    e.preventDefault(); a.remove();
-  });
-  return a;
-}
-
-function applyData(data) {
-  if (!data) return;
-
-  document.querySelectorAll('[data-save]').forEach(function(el) {
-    var key = el.getAttribute('data-save');
-    if (data[key] !== undefined) el.innerHTML = data[key];
-  });
-
-  if (data['_projects'] && data['_projects'].length) {
-    var grid = document.getElementById('projectsGrid');
-    grid.querySelectorAll('.project-card').forEach(function(el){ el.remove(); });
-    data['_projects'].forEach(function(proj, i) {
-      var card = document.createElement('div');
-      card.className = 'project-card reveal revealed';
-      card.dataset.projId = 'p'+(i+1);
-      card.innerHTML =
-        '<div class="project-card-top">'+
-          '<span class="project-tag" contenteditable="false">'+proj.tag+'</span>'+
-          '<button class="proj-delete-btn admin-only" style="display:none" title="Supprimer">✕</button>'+
-        '</div>'+
-        '<div class="project-title" contenteditable="false">'+proj.title+'</div>'+
-        '<div class="project-desc"  contenteditable="false">'+proj.desc+'</div>'+
-        '<div class="project-attachments"></div>'+
-        '<button class="proj-attach-btn admin-only" style="display:none">＋ Ajouter lien / PDF / image</button>';
-      var attDiv = card.querySelector('.project-attachments');
-      if (proj.attachments) {
-        proj.attachments.forEach(function(att) {
-          attDiv.appendChild(makeAttachChip(att, false));
+        // Photo click effect
+        document.querySelectorAll('.love-photo').forEach(photo => {
+            photo.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2) rotate(10deg)';
+                this.style.filter = 'brightness(1.3) saturate(1.5)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.filter = '';
+                }, 500);
+            });
         });
-      }
-      wireProjectCard(card);
-      grid.appendChild(card);
-    });
-  }
-
-  if (data['_experiences'] && data['_experiences'].length) {
-    var tl = document.getElementById('timeline');
-    var addBtn = document.getElementById('addExpBtn');
-    tl.querySelectorAll('.timeline-item').forEach(function(el){ el.remove(); });
-    data['_experiences'].forEach(function(exp) {
-      var item = document.createElement('div');
-      item.className = 'timeline-item reveal revealed';
-      item.innerHTML =
-        '<div class="timeline-date"  contenteditable="false">'+exp.date+'</div>'+
-        '<div class="timeline-title" contenteditable="false">'+exp.title+'</div>'+
-        '<div class="timeline-org"   contenteditable="false">'+exp.org+'</div>'+
-        '<div class="timeline-desc"  contenteditable="false">'+exp.desc+'</div>';
-      tl.insertBefore(item, addBtn);
-    });
-  }
-
-  if (data['_skills'] && data['_skills'].length) {
-    var sg = document.getElementById('skillsGrid');
-    sg.querySelectorAll('.skill-card').forEach(function(el){ el.remove(); });
-    data['_skills'].forEach(function(sk) {
-      var c = document.createElement('div');
-      c.className = 'skill-card reveal revealed';
-      c.innerHTML = '<div class="skill-icon">'+sk.icon+'</div><div class="skill-name">'+sk.name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+sk.level+'"></div></div>';
-      sg.appendChild(c);
-    });
-  }
-
-  if (data['_contactlinks'] && data['_contactlinks'].length) {
-    var cl = document.getElementById('contactLinksList');
-    cl.querySelectorAll('.contact-link').forEach(function(el){ el.remove(); });
-    data['_contactlinks'].forEach(function(lnk) {
-      cl.appendChild(buildContactLink(lnk.icon, lnk.text, false));
-    });
-  }
-
-  if (data['_avatar']) {
-    document.getElementById('avatarImg').src = data['_avatar'];
-    document.getElementById('avatarEl').classList.add('has-photo');
-  }
-
-  var nameEl = document.querySelector('h1 em[data-save]');
-  if (nameEl) {
-    var ini = nameEl.textContent.trim()[0]||'Y';
-    document.getElementById('avatarInitial').textContent = ini.toUpperCase();
-  }
-}
-
-// Load from Firebase live
-onValue(ref(db, 'portfolio'), function(snapshot) {
-  applyData(snapshot.val());
-});
-
-// ══════════════════════════════════════════════
-// PAGE LOGIC
-// ══════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', function() {
-  var ADMIN_PASSWORD = 'admin2025';
-  var isAdmin = false;
-  var currentAttachCard = null;
-  var currentAttachType = 'link';
-
-  // Scroll reveal
-  var revObs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e,i) {
-      if (e.isIntersecting) {
-        setTimeout(function(){ e.target.classList.add('revealed'); }, i*80);
-        revObs.unobserve(e.target);
-      }
-    });
-  }, { threshold:0.1 });
-  document.querySelectorAll('.reveal').forEach(function(r){ revObs.observe(r); });
-
-  setTimeout(function() {
-    document.querySelectorAll('.skill-fill').forEach(function(f) {
-      var w=f.style.width; f.style.width='0%';
-      setTimeout(function(){ f.style.width=w; },100);
-    });
-  }, 600);
-
-  // ── Wire existing project cards ──
-  document.querySelectorAll('#projectsGrid .project-card').forEach(wireProjectCard);
-
-  // ── Wire existing contact delete buttons ──
-  document.querySelectorAll('#contactLinksList .contact-del-btn').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      btn.closest('.contact-link').remove();
-    });
-  });
-
-  // ── setEditing ──
-  function setEditing(enabled) {
-    isAdmin = enabled;
-    document.querySelectorAll('[contenteditable]').forEach(function(el) {
-      el.contentEditable = enabled ? 'true' : 'false';
-    });
-    // add-btn visibility
-    document.querySelectorAll('.add-btn').forEach(function(b){ b.style.display = enabled?'inline-flex':'none'; });
-    // admin-only elements
-    document.querySelectorAll('.admin-only').forEach(function(el){ el.style.display = enabled?'':'none'; });
-    // chip del buttons
-    document.querySelectorAll('.chip-del').forEach(function(b){ b.style.display = enabled?'inline':'none'; });
-    // stat boxes
-    document.querySelectorAll('.stat-box').forEach(function(b){
-      b.classList.toggle('admin-active', enabled);
     });
 
-    document.getElementById('editHint').style.display = enabled?'block':'none';
-    document.getElementById('saveBtn').style.display  = enabled?'block':'none';
-    document.getElementById('addContactLinkBtn').style.display = enabled?'inline-flex':'none';
-
-    var ab = document.getElementById('adminBtn');
-    if (enabled){ ab.textContent='🔓 Quitter Admin'; ab.classList.add('active'); }
-    else        { ab.textContent='🔒 Admin';         ab.classList.remove('active'); }
-  }
-  setEditing(false);
-
-  // ── Admin login ──
-  document.getElementById('adminBtn').addEventListener('click', function() {
-    if (isAdmin) { setEditing(false); }
-    else {
-      document.getElementById('loginOverlay').classList.add('open');
-      setTimeout(function(){ document.getElementById('pwInput').focus(); },100);
-    }
-  });
-  function checkPassword() {
-    var input = document.getElementById('pwInput');
-    var err   = document.getElementById('loginError');
-    if (input.value === ADMIN_PASSWORD) {
-      setEditing(true); closeLogin();
-    } else {
-      err.textContent = 'Mot de passe incorrect.';
-      input.value=''; input.classList.add('error');
-      setTimeout(function(){ input.classList.remove('error'); },400);
-    }
-  }
-  function closeLogin() {
-    document.getElementById('loginOverlay').classList.remove('open');
-    document.getElementById('pwInput').value='';
-    document.getElementById('loginError').textContent='';
-  }
-  document.getElementById('pwSubmitBtn').addEventListener('click', checkPassword);
-  document.getElementById('pwCancelBtn').addEventListener('click', closeLogin);
-  document.getElementById('pwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPassword(); });
-  document.getElementById('loginOverlay').addEventListener('click', function(e){ if(e.target===this) closeLogin(); });
-
-  // ── Save ──
-  document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
-
-  // ── Avatar ──
-  document.getElementById('avatarEl').addEventListener('click', function() {
-    if (isAdmin) document.getElementById('avatarInput').click();
-  });
-  document.getElementById('avatarInput').addEventListener('change', function() {
-    if (!isAdmin) return;
-    var file=this.files[0]; if(!file) return;
-    var reader=new FileReader();
-    reader.onload=function(e){
-      document.getElementById('avatarImg').src=e.target.result;
-      document.getElementById('avatarEl').classList.add('has-photo');
-    };
-    reader.readAsDataURL(file);
-  });
-  document.querySelector('h1 em').addEventListener('input', function() {
-    var i=this.textContent.trim()[0]||'Y';
-    document.getElementById('avatarInitial').textContent=i.toUpperCase();
-  });
-
-  // ── Stat boxes — click to edit when admin ──
-  document.querySelectorAll('.stat-box').forEach(function(box) {
-    box.addEventListener('click', function() {
-      if (!isAdmin) return;
-      var big = box.querySelector('.big');
-      if (!big) return;
-      var val = prompt('Nouvelle valeur :', big.textContent.trim());
-      if (val !== null) big.textContent = val;
-    });
-  });
-
-  // ── Skills ──
-  document.getElementById('addSkillBtn').addEventListener('click', function() {
-    if (!isAdmin) return;
-    var name=prompt('Nom de la compétence :'); if(!name) return;
-    var level=prompt('Niveau (0-100) :')||'70';
-    var icons=['🎯','📊','🔧','🌐','🎨','📚','🧬','🔢'];
-    var icon=icons[Math.floor(Math.random()*icons.length)];
-    var card=document.createElement('div');
-    card.className='skill-card reveal revealed';
-    card.innerHTML='<div class="skill-icon">'+icon+'</div><div class="skill-name">'+name+'</div><div class="skill-bar"><div class="skill-fill" style="width:'+Math.min(100,parseInt(level))+'%"></div></div>';
-    document.getElementById('skillsGrid').appendChild(card);
-  });
-
-  // ── WIRE PROJECT CARD (attach + delete) ──
-  function wireProjectCard(card) {
-    var delBtn = card.querySelector('.proj-delete-btn');
-    if (delBtn) {
-      delBtn.addEventListener('click', function() {
-        if (confirm('Supprimer ce projet ?')) card.remove();
-      });
-    }
-    var attBtn = card.querySelector('.proj-attach-btn');
-    if (attBtn) {
-      attBtn.addEventListener('click', function() {
-        currentAttachCard = card;
-        openAttachModal();
-      });
-    }
-    card.querySelectorAll('.chip-del').forEach(function(b) {
-      b.addEventListener('click', function(e) {
-        e.preventDefault(); e.stopPropagation();
-        b.closest('.attach-chip').remove();
-      });
-    });
-  }
-
-  // ── General Modal ──
-  var modalType='';
-  function openModal(type) {
-    if (!isAdmin) return;
-    modalType=type;
-    var title=document.getElementById('modalTitle');
-    var form=document.getElementById('modalForm');
-    if (type==='experience') {
-      title.textContent='Ajouter une expérience';
-      form.innerHTML='<div class="form-group"><label>Date</label><input id="m_date" type="text" placeholder="Ex: 2025 — 2026"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: Olympiade"/></div><div class="form-group"><label>Organisation</label><input id="m_org" type="text" placeholder="Ex: Académie Régionale"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
-    } else {
-      title.textContent='Ajouter un projet';
-      form.innerHTML='<div class="form-group"><label>Catégorie</label><input id="m_tag" type="text" placeholder="Ex: Informatique"/></div><div class="form-group"><label>Titre</label><input id="m_title" type="text" placeholder="Ex: App de calcul"/></div><div class="form-group"><label>Description</label><textarea id="m_desc" placeholder="Décrivez..."></textarea></div>';
-    }
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-
-  document.getElementById('addExpBtn').addEventListener('click',  function(){ openModal('experience'); });
-  document.getElementById('addProjBtn').addEventListener('click', function(){ openModal('project'); });
-  document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
-  document.getElementById('modalOverlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-  document.getElementById('modalSaveBtn').addEventListener('click', function() {
-    var title=document.getElementById('m_title').value; if(!title) return;
-    if (modalType==='experience') {
-      var item=document.createElement('div');
-      item.className='timeline-item reveal revealed';
-      item.innerHTML=
-        '<div class="timeline-date"  contenteditable="true">'+(document.getElementById('m_date').value||'')+'</div>'+
-        '<div class="timeline-title" contenteditable="true">'+title+'</div>'+
-        '<div class="timeline-org"   contenteditable="true">'+(document.getElementById('m_org').value||'')+'</div>'+
-        '<div class="timeline-desc"  contenteditable="true">'+(document.getElementById('m_desc').value||'')+'</div>';
-      var tl=document.getElementById('timeline');
-      tl.insertBefore(item, document.getElementById('addExpBtn'));
-    } else {
-      var card=document.createElement('div');
-      card.className='project-card reveal revealed';
-      card.innerHTML=
-        '<div class="project-card-top">'+
-          '<span class="project-tag" contenteditable="true">'+(document.getElementById('m_tag').value||'Projet')+'</span>'+
-          '<button class="proj-delete-btn admin-only" title="Supprimer">✕</button>'+
-        '</div>'+
-        '<div class="project-title" contenteditable="true">'+title+'</div>'+
-        '<div class="project-desc"  contenteditable="true">'+(document.getElementById('m_desc').value||'')+'</div>'+
-        '<div class="project-attachments"></div>'+
-        '<button class="proj-attach-btn admin-only">＋ Ajouter lien / PDF / image</button>';
-      wireProjectCard(card);
-      document.getElementById('projectsGrid').appendChild(card);
-    }
-    closeModal();
-  });
-
-  // ── Attachment Modal ──
-  function openAttachModal() {
-    currentAttachType = 'link';
-    document.querySelectorAll('.attach-type-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.type==='link'); });
-    renderAttachForm('link');
-    document.getElementById('attachOverlay').classList.add('open');
-  }
-  function closeAttachModal() { document.getElementById('attachOverlay').classList.remove('open'); }
-
-  function renderAttachForm(type) {
-    var form = document.getElementById('attachForm');
-    if (type==='link') {
-      form.innerHTML=
-        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Voir le projet"/></div>'+
-        '<div class="form-group"><label>URL</label><input id="a_url" type="url" placeholder="https://..."/></div>';
-    } else if (type==='pdf') {
-      form.innerHTML=
-        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Rapport PDF"/></div>'+
-        '<div class="form-group"><label>Fichier PDF</label><input id="a_file" type="file" accept=".pdf" style="color:var(--text);padding:0.5rem 0"/></div>';
-    } else {
-      form.innerHTML=
-        '<div class="form-group"><label>Label</label><input id="a_label" type="text" placeholder="Ex: Photo du projet"/></div>'+
-        '<div class="form-group"><label>Fichier image</label><input id="a_file" type="file" accept="image/*" style="color:var(--text);padding:0.5rem 0"/></div>'+
-        '<img id="imgPreview" class="img-preview"/>';
-      document.getElementById('a_file').addEventListener('change', function() {
-        var file=this.files[0]; if(!file) return;
-        var reader=new FileReader();
-        reader.onload=function(e){
-          var p=document.getElementById('imgPreview');
-          p.src=e.target.result; p.style.display='block';
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  }
-
-  document.querySelectorAll('.attach-type-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      currentAttachType = btn.dataset.type;
-      document.querySelectorAll('.attach-type-btn').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      renderAttachForm(currentAttachType);
-    });
-  });
-
-  document.getElementById('attachCancelBtn').addEventListener('click', closeAttachModal);
-  document.getElementById('attachOverlay').addEventListener('click', function(e){ if(e.target===this) closeAttachModal(); });
-
-  document.getElementById('attachSaveBtn').addEventListener('click', function() {
-    if (!currentAttachCard) return;
-    var label = (document.getElementById('a_label')||{}).value || '';
-    var attDiv = currentAttachCard.querySelector('.project-attachments');
-
-    if (currentAttachType === 'link') {
-      var url = (document.getElementById('a_url')||{}).value||'';
-      if (!url) return;
-      var chip = makeAttachChip({type:'link', label:label||url, url:url}, true);
-      attDiv.appendChild(chip);
-      closeAttachModal();
-
-    } else {
-      var fileEl = document.getElementById('a_file');
-      if (!fileEl || !fileEl.files[0]) { closeAttachModal(); return; }
-      var file = fileEl.files[0];
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var dataUrl = e.target.result;
-        var chip = makeAttachChip({type:currentAttachType, label:label||file.name, url:dataUrl}, true);
-        attDiv.appendChild(chip);
-        closeAttachModal();
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // ── Contact link modal ──
-  document.getElementById('addContactLinkBtn').addEventListener('click', function() {
-    document.getElementById('cl_icon').value='';
-    document.getElementById('cl_text').value='';
-    document.getElementById('contactLinkOverlay').classList.add('open');
-    setTimeout(function(){ document.getElementById('cl_icon').focus(); },100);
-  });
-  document.getElementById('clCancelBtn').addEventListener('click', function() {
-    document.getElementById('contactLinkOverlay').classList.remove('open');
-  });
-  document.getElementById('contactLinkOverlay').addEventListener('click', function(e) {
-    if(e.target===this) this.classList.remove('open');
-  });
-  document.getElementById('clSaveBtn').addEventListener('click', function() {
-    var icon = document.getElementById('cl_icon').value || '🔗';
-    var text = document.getElementById('cl_text').value; if(!text) return;
-    var a = buildContactLink(icon, text, true);
-    var addBtn = document.getElementById('addContactLinkBtn');
-    document.getElementById('contactLinksList').insertBefore(a, addBtn);
-    document.getElementById('contactLinkOverlay').classList.remove('open');
-  });
-
-  // ── Contact send via EmailJS ──
-  // Load EmailJS
-  var ejsScript = document.createElement('script');
-  ejsScript.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  ejsScript.onload = function() {
-    emailjs.init('hAQnTvVHaTrYSICHn'); // public key placeholder — update after EmailJS signup
-  };
-  document.head.appendChild(ejsScript);
-
-  document.getElementById('sendBtn').addEventListener('click', function() {
-    var name    = document.getElementById('contactName').value.trim();
-    var email   = document.getElementById('contactEmail').value.trim();
-    var message = document.getElementById('contactMessage').value.trim();
-    var status  = document.getElementById('sendStatus');
-
-    if (!name || !email || !message) {
-      status.style.display='block';
-      status.style.color='#f04a4a';
-      status.textContent='⚠️ Veuillez remplir tous les champs.';
-      return;
-    }
-
-    var btn = document.getElementById('sendBtn');
-    btn.textContent='⏳ Envoi...'; btn.disabled=true;
-
-    if (typeof emailjs === 'undefined') {
-      // Fallback: mailto
-      window.location.href = 'mailto:haitambentalha60@gmail.com'
-        + '?subject=Message de '+encodeURIComponent(name)
-        + '&body='+encodeURIComponent('De: '+name+'\nEmail: '+email+'\n\n'+message);
-      btn.textContent='Envoyer le message'; btn.disabled=false;
-      return;
-    }
-
-    emailjs.send('service_portfolio', 'template_portfolio', {
-      from_name:    name,
-      from_email:   email,
-      message:      message,
-      to_email:     'haitambentalha60@gmail.com'
-    }).then(function() {
-      status.style.display='block'; status.style.color='var(--accent2)';
-      status.textContent='✅ Message envoyé ! Je te répondrai bientôt.';
-      btn.textContent='Envoyer le message'; btn.disabled=false;
-      document.getElementById('contactName').value='';
-      document.getElementById('contactEmail').value='';
-      document.getElementById('contactMessage').value='';
-    }, function(err) {
-      // Fallback to mailto if EmailJS not configured
-      window.location.href = 'mailto:haitambentalha60@gmail.com'
-        + '?subject=Message de '+encodeURIComponent(name)
-        + '&body='+encodeURIComponent('De: '+name+'\nEmail: '+email+'\n\n'+message);
-      btn.textContent='Envoyer le message'; btn.disabled=false;
-    });
-  });
-
-}); // end DOMContentLoaded
-</script>
+    </script>
 </body>
 </html>
